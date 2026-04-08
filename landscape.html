@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cloud Native Universe · VRC / OEC · v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:        #0D0820;
+  --violet:    #3D1F6E;
+  --dusk:      #6B3FA0;
+  --forest:    #1B4332;
+  --gold:      #D4A017;
+  --gold-l:    #F0C84A;
+  --amber:     #B8956A;
+  --moon:      #EDE8F5;
+  --mist:      #AFA8C0;
+  --shadow:    #2A2035;
+  --sage:      #52A882;
+  --eu-blue:   #003399;
+  --eu-gold:   #FFCC00;
+
+  --foss:  #16A34A; --foss-bg:  #052E16;
+  --oss:   #2563EB; --oss-bg:   #0C1445;
+  --closed:#DC2626; --closed-bg:#450A0A;
+  --hybrid:#9333EA; --hybrid-bg:#2D1B4E;
+
+  /* Sovereignty levels */
+  --sov-high: #16A34A; --sov-h-bg: #052E16;
+  --sov-mid:  #CA8A04; --sov-m-bg: #2A1F00;
+  --sov-low:  #DC2626; --sov-l-bg: #450A0A;
+
+  /* SI tiers */
+  --tier1:#9333EA; --tier2:#2563EB; --tier3:#0A6B6B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--moon);font-family:'Raleway',sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
+
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 20% 50%,rgba(61,31,110,.35) 0%,transparent 55%),
+             radial-gradient(ellipse at 80% 20%,rgba(27,67,50,.25) 0%,transparent 40%)}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,8,32,.94);
+  backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,160,23,.2);
+  padding:10px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:700;
+  color:var(--moon);letter-spacing:1px;margin-right:8px}
+.nav-brand span{color:var(--gold);font-style:italic}
+.nav-tabs{display:flex;gap:3px;flex-wrap:wrap}
+.tab{padding:6px 14px;font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--mist);cursor:pointer;
+  border:1px solid transparent;border-radius:3px;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--gold);border-color:rgba(212,160,23,.3)}
+.tab.active{color:var(--gold);background:rgba(212,160,23,.1);border-color:rgba(212,160,23,.4)}
+
+/* ── LEGEND ── */
+.legend{display:flex;gap:16px;align-items:center;padding:8px 28px;
+  background:rgba(42,32,53,.5);border-bottom:1px solid var(--shadow);flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:1px}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.filter-row{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.fb{padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  border:1px solid var(--shadow);border-radius:2px;background:transparent;
+  color:var(--mist);cursor:pointer;transition:all .15s}
+.fb:hover,.fb.active{border-color:var(--gold);color:var(--gold);background:rgba(212,160,23,.08)}
+.fb.foss-f.active{border-color:var(--foss);color:var(--foss);background:rgba(22,163,74,.1)}
+.fb.oss-f.active{border-color:var(--oss);color:var(--oss);background:rgba(37,99,235,.1)}
+.fb.closed-f.active{border-color:var(--closed);color:var(--closed);background:rgba(220,38,38,.1)}
+.fb.hybrid-f.active{border-color:var(--hybrid);color:var(--hybrid);background:rgba(147,51,234,.1)}
+
+/* ── VIEWS ── */
+.view{display:none;position:relative;z-index:1}
+.view.active{display:block}
+
+/* ── SECTIONS ── */
+.section{padding:28px;border-bottom:1px solid rgba(42,32,53,.6)}
+.sh{display:flex;align-items:baseline;gap:16px;margin-bottom:18px}
+.st{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--moon)}
+.ss{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--amber)}
+
+/* ── VENDOR GRID ── */
+.vg{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:11px}
+
+/* ── VENDOR CARD ── */
+.vc{border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.06);
+  transition:transform .15s,box-shadow .15s,border-color .15s;cursor:pointer}
+.vc:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);
+  border-color:rgba(212,160,23,.3)}
+.vc.hidden{display:none}
+.ca{height:3px}
+.cb{padding:13px 15px;background:rgba(255,255,255,.02)}
+.ct{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px}
+.cn{font-weight:700;font-size:13px;color:var(--moon);line-height:1.2}
+.badge{flex-shrink:0;font-size:8px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-top:1px}
+.b-foss{background:var(--foss-bg);color:var(--foss);border:1px solid rgba(22,163,74,.3)}
+.b-oss{background:var(--oss-bg);color:var(--oss);border:1px solid rgba(37,99,235,.3)}
+.b-closed{background:var(--closed-bg);color:var(--closed);border:1px solid rgba(220,38,38,.3)}
+.b-hybrid{background:var(--hybrid-bg);color:var(--hybrid);border:1px solid rgba(147,51,234,.3)}
+.cd{font-size:11px;color:var(--mist);line-height:1.5;margin-bottom:7px}
+.cf{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.ctag{font-size:9px;font-weight:600;letter-spacing:1px;padding:2px 5px;border-radius:2px;
+  background:rgba(42,32,53,.8);color:var(--mist);text-transform:uppercase}
+.coec{margin-left:auto;font-size:9px;font-weight:800;letter-spacing:1px;padding:2px 7px;
+  border-radius:2px;background:rgba(42,31,0,.8);color:var(--gold);
+  border:1px solid rgba(212,160,23,.4);text-transform:uppercase}
+.ac-foss{background:linear-gradient(90deg,var(--foss),transparent)}
+.ac-oss{background:linear-gradient(90deg,var(--oss),transparent)}
+.ac-closed{background:linear-gradient(90deg,var(--closed),transparent)}
+.ac-hybrid{background:linear-gradient(90deg,var(--hybrid),transparent)}
+
+/* ── SOVEREIGN CARDS (EU DC view) ── */
+.sov-card{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.07);
+  transition:transform .15s;cursor:default;margin-bottom:10px}
+.sov-card:hover{transform:translateY(-2px)}
+.sov-header{padding:12px 16px;display:flex;align-items:center;gap:12px}
+.sov-flag{font-size:20px;flex-shrink:0}
+.sov-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--moon)}
+.sov-hq{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-top:1px}
+.sov-badges{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.sov-badge{font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px}
+.sb-high{background:var(--sov-h-bg);color:var(--sov-high);border:1px solid rgba(22,163,74,.3)}
+.sb-mid{background:var(--sov-m-bg);color:var(--sov-mid);border:1px solid rgba(202,138,4,.3)}
+.sb-low{background:var(--sov-l-bg);color:var(--sov-low);border:1px solid rgba(220,38,38,.3)}
+.sov-body{padding:10px 16px 14px;background:rgba(255,255,255,.02)}
+.sov-desc{font-size:12px;color:var(--mist);line-height:1.6;margin-bottom:8px}
+.sov-tags{display:flex;gap:5px;flex-wrap:wrap}
+
+/* ── SI CARDS ── */
+.si-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.si-card{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.02);transition:transform .15s,border-color .15s}
+.si-card:hover{transform:translateY(-2px);border-color:rgba(212,160,23,.25)}
+.si-accent{height:4px}
+.t1{background:linear-gradient(90deg,var(--tier1),transparent)}
+.t2{background:linear-gradient(90deg,var(--tier2),transparent)}
+.t3{background:linear-gradient(90deg,var(--tier3),transparent)}
+.si-body{padding:15px 16px}
+.si-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.si-name{font-weight:700;font-size:14px;color:var(--moon);line-height:1.2}
+.si-country{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--mist);margin-top:2px}
+.si-tier{font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;flex-shrink:0;margin-top:1px}
+.st1{background:rgba(147,51,234,.15);color:var(--tier1);border:1px solid rgba(147,51,234,.3)}
+.st2{background:rgba(37,99,235,.15);color:var(--tier2);border:1px solid rgba(37,99,235,.3)}
+.st3{background:rgba(10,107,107,.15);color:var(--tier3);border:1px solid rgba(10,107,107,.3)}
+.si-desc{font-size:12px;color:var(--mist);line-height:1.55;margin-bottom:8px}
+.si-tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.si-oec{margin-left:auto;font-size:8px;font-weight:800;letter-spacing:1px;padding:2px 6px;
+  border-radius:2px;background:rgba(42,31,0,.8);color:var(--gold);
+  border:1px solid rgba(212,160,23,.4);text-transform:uppercase}
+
+/* ── HERO ── */
+.hero{padding:52px 28px 36px;border-bottom:1px solid rgba(212,160,23,.15);
+  background:radial-gradient(ellipse at 15% 50%,rgba(61,31,110,.4) 0%,transparent 55%),
+             radial-gradient(ellipse at 85% 30%,rgba(27,67,50,.3) 0%,transparent 45%)}
+.hero-eye{font-size:10px;font-weight:700;letter-spacing:6px;text-transform:uppercase;
+  color:var(--amber);margin-bottom:14px}
+.hero-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,68px);
+  font-weight:700;line-height:1;color:var(--moon);margin-bottom:8px}
+.hero-h em{font-style:italic;color:var(--gold)}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;
+  color:var(--mist);margin-bottom:28px;max-width:540px}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap}
+.hml{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.3);margin-bottom:3px}
+.hmv{font-size:13px;font-weight:500;color:var(--moon)}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--shadow)}
+.stat{padding:18px 28px;border-right:1px solid var(--shadow)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;line-height:1;margin-bottom:3px}
+.stat-l{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--mist)}
+
+/* ── INFO BOX ── */
+.ibox{border-left:3px solid var(--gold);background:rgba(212,160,23,.06);
+  border-radius:0 6px 6px 0;padding:14px 18px;margin:16px 0}
+.ibox p{font-size:13px;color:var(--mist);line-height:1.65}
+.ibox strong{color:var(--gold)}
+
+/* ── EU SOVEREIGNTY KEY ── */
+.sov-key{display:flex;gap:20px;padding:14px 28px;background:rgba(0,51,153,.08);
+  border-bottom:1px solid rgba(0,51,153,.2);flex-wrap:wrap}
+.sk-item{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1px}
+.sk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* ── CLOUD ACT BANNER ── */
+.cloud-act{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);
+  border-radius:8px;padding:16px 20px;margin:20px 28px}
+.cloud-act-title{font-weight:700;font-size:13px;color:var(--closed);margin-bottom:6px}
+.cloud-act-body{font-size:12px;color:var(--mist);line-height:1.65}
+
+/* ── TOOLTIP ── */
+.tooltip{display:none;position:fixed;z-index:200;background:#16101F;
+  border:1px solid rgba(212,160,23,.4);border-radius:8px;padding:14px 16px;
+  max-width:270px;pointer-events:none;box-shadow:0 16px 40px rgba(0,0,0,.6)}
+.tooltip.show{display:block}
+.tt-name{font-weight:700;font-size:13px;color:var(--moon);margin-bottom:3px}
+.tt-body{font-size:12px;color:var(--mist);line-height:1.5}
+.tt-mdf{margin-top:7px;font-size:11px;font-weight:700;color:var(--gold)}
+
+/* ── SEARCH ── */
+.search-bar{padding:12px 28px;background:rgba(42,32,53,.3);border-bottom:1px solid var(--shadow)}
+.search-input{width:100%;max-width:400px;padding:8px 14px;background:rgba(255,255,255,.04);
+  border:1px solid var(--shadow);border-radius:4px;color:var(--moon);font-size:13px;
+  font-family:'Raleway',sans-serif;outline:none;transition:border-color .15s}
+.search-input:focus{border-color:rgba(212,160,23,.4)}
+.search-input::placeholder{color:var(--mist);opacity:.5}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--shadow);border-radius:3px}
+
+/* ── Language switcher ── */
+.lang-switch {
+  display: flex; gap: 6px; align-items: center; margin-left: 12px;
+}
+.lang-btn {
+  padding: 5px 11px; font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  border: 1px solid var(--shadow); border-radius: 2px;
+  background: transparent; color: var(--mist); cursor: pointer;
+  transition: all .15s;
+}
+.lang-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212,160,23,.1); }
+.lang-btn:hover  { border-color: var(--gold); color: var(--gold); }
+[data-lang="en"] .de, [data-lang="de"] .en { display: none !important; }
+</style>
+</head>
+<body data-lang="de">
+
+<nav>
+  <div class="nav-brand">Cloud Native <span>Universe</span></div>
+  <div class="nav-tabs">
+    <div class="tab active" onclick="showView('all')"><span class="de">🌐 Alle Vendors</span><span class="en">🌐 All Vendors</span></div>
+    <div class="tab" onclick="showView('eu')"><span class="de">🇪🇺 Europäische & Sovereign DC</span><span class="en">🇪🇺 European & Sovereign DC</span></div>
+    <div class="tab" onclick="showView('si')"><span class="de">🤝 DACH Systemintegratoren</span><span class="en">🤝 DACH System Integrators</span></div>
+    <div class="tab" onclick="showView('isv')"><span class="de">🏭 DACH ISV Hersteller</span><span class="en">🏭 DACH ISV Vendors</span></div>
+    <div class="tab" onclick="showView('strategy')"><span class="de">⚔️ OEC Conquest</span><span class="en">⚔️ OEC Conquest</span></div>
+  </div>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('de')">DE</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="legend">
+  <div class="li"><div class="ld" style="background:var(--foss)"></div><span class="de">FOSS</span><span class="en">FOSS</span></div>
+  <div class="li"><div class="ld" style="background:var(--oss)"></div><span class="de">OSS Kern</span><span class="en">OSS Core</span></div>
+  <div class="li"><div class="ld" style="background:var(--hybrid)"></div><span class="de">Hybrid</span><span class="en">Hybrid</span></div>
+  <div class="li"><div class="ld" style="background:var(--closed)"></div><span class="de">Closed Source</span><span class="en">Closed Source</span></div>
+  <div class="li"><div class="ld" style="background:var(--gold)"></div><span class="de">OEC Priorität</span><span class="en">OEC Priority</span></div>
+  <div class="filter-row">
+    <button class="fb foss-f" onclick="ft('foss')"><span class="de">FOSS</span><span class="en">FOSS</span></button>
+    <button class="fb oss-f" onclick="ft('oss')">OSS</button>
+    <button class="fb hybrid-f" onclick="ft('hybrid')"><span class="de">Hybrid</span><span class="en">Hybrid</span></button>
+    <button class="fb closed-f" onclick="ft('closed')"><span class="de">Closed Source</span><span class="en">Closed Source</span></button>
+    <button class="fb" onclick="ft('oec')"><span class="de">OEC ★</span><span class="en">OEC ★</span></button>
+    <button class="fb" onclick="ft('all')"><span class="de">Alle</span><span class="en">All</span></button>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tt-name" id="tt-n"></div>
+  <div class="tt-body" id="tt-b"></div>
+  <div class="tt-mdf" id="tt-m"></div>
+</div>
+
+<!-- ════════════════════════════ ALL VENDORS ════════════════════════════ -->
+<div class="view active" id="view-all">
+  <div class="hero">
+    <div class="hero-eye">VRC · Open Ecosystem Collective · 2026</div>
+    <div class="hero-h"><span class="de">Cloud Native <em>Universum</em></span><span class="en">Cloud Native <em>Universe</em></span></div>
+    <div class="hero-sub"><span class="de">120+ Vendors · 10 Schichten · Eine Methodologie</span><span class="en">120+ Vendors · 10 Layers · One Methodology</span></div>
+    <div class="hero-meta">
+      <div><div class="hml"><span class="de">Vendors gesamt</span><span class="en">Vendors total</span></div><div class="hmv">120+</div></div>
+      <div><div class="hml"><span class="de">FOSS Projekte</span><span class="en">FOSS Projects</span></div><div class="hmv">48</div></div>
+      <div><div class="hml"><span class="de">OEC Ziele</span><span class="en">OEC Targets</span></div><div class="hmv">34</div></div>
+      <div><div class="hml"><span class="de">CNCF Mitglieder</span><span class="en">CNCF Members</span></div><div class="hmv">800+</div></div>
+      <div><div class="hml"><span class="de">MDF Opportunity</span><span class="en">MDF Opportunity</span></div><div class="hmv">USD 8K–50K / Firma / Jahr</div></div>
+    </div>
+  </div>
+  <div class="search-bar"><input class="search-input" placeholder="Vendor suchen... / Search vendor..." oninput="searchVendors(this.value)" id="vendor-search"/></div>
+  <div id="all-sections"></div>
+</div>
+
+<!-- ════════════════════════ EU SOVEREIGN DC ════════════════════════════ -->
+<div class="view" id="view-eu">
+  <div class="hero">
+    <div class="hero-eye">Digital Sovereignty · DACH · Europa · 2026</div>
+    <div class="hero-h"><span class="de">Europäische <em>Souveränität</em></span><span class="en">European <em>Sovereignty</em></span></div>
+    <div class="hero-sub"><span class="de">Wer kontrolliert deine Daten – wirklich?</span><span class="en">Who really controls your data?</span></div>
+    <div class="hero-meta">
+      <div><div class="hml"><span class="de">EU Cloud Market US-Abhängigkeit</span><span class="en">EU Cloud Market US Dependency</span></div><div class="hmv">~70–90%</div></div>
+      <div><div class="hml">GAIA-X Data Spaces 2025</div><div class="hmv">180+</div></div>
+      <div><div class="hml">EU Cloud & AI Act</div><div class="hmv">In Kraft 2025</div></div>
+      <div><div class="hml">CLOUD Act Risiko</div><div class="hmv">Alle US-Anbieter betroffen</div></div>
+    </div>
+  </div>
+
+  <div class="cloud-act">
+    <div class="cloud-act-title"><span class="de">⚠ US CLOUD Act – Das zentrale Risiko für DACH-Klienten</span><span class="en">⚠ US CLOUD Act – The Central Risk for DACH Clients</span></div>
+    <div class="cloud-act-body">Der US CLOUD Act von 2018 verpflichtet amerikanische Technologiefirmen, Behörden auf Anfrage Zugang zu Daten zu gewähren – <strong>unabhängig davon, wo die Daten gespeichert sind</strong>. Das bedeutet: AWS, Azure und Google Cloud Sovereign-Angebote in der EU unterliegen weiterhin amerikanischem Recht. Für Schweizer Finanzinstitute (FINMA), Gesundheitsorganisationen und Behörden ist das ein kritisches Compliance-Risiko. OEC kann Klienten helfen, dieses Risiko zu bewerten und geeignete Sovereign-Cloud-Strategien zu entwickeln.</div>
+  </div>
+
+  <div class="sov-key">
+    <div class="sk-item"><div class="sk-dot" style="background:var(--sov-high)"></div><span class="de">Vollsouverän – EU-Eigentümer, EU-Recht, keine US-Komponenten</span><span class="en">Fully Sovereign – EU owner, EU law, no US components</span></div>
+    <div class="sk-item"><div class="sk-dot" style="background:var(--sov-mid)"></div><span class="de">Teilsouverän – EU-Rechenzentrum, aber US-Eigentümer oder US-Komponenten</span><span class="en">Partially Sovereign – EU datacenter, but US owner or US components</span></div>
+    <div class="sk-item"><div class="sk-dot" style="background:var(--sov-low)"></div><span class="de">Sovereignty-Washing – Marketing-Versprechen, CLOUD Act-Risiko bleibt</span><span class="en">Sovereignty-Washing – Marketing claims, CLOUD Act risk remains</span></div>
+  </div>
+
+  <!-- Vollsouverän -->
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Vollsouveräne europäische Anbieter</span><span class="en">Fully Sovereign European Providers</span></div><div class="ss">Keine US-Komponenten · EU-Eigentümer · EU-Recht</div></div>
+    <div id="eu-full"></div>
+  </div>
+
+  <!-- Teilsouverän -->
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Teilsouveräne / DACH-fokussierte Anbieter</span><span class="en">Partially Sovereign / DACH-focused Providers</span></div><div class="ss">EU-Rechenzentrum · sorgfältige Prüfung empfohlen</div></div>
+    <div id="eu-partial"></div>
+  </div>
+
+  <!-- Sovereign von US-Anbietern -->
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">«Sovereign»-Angebote US-Hyperscaler</span><span class="en">US Hyperscaler «Sovereign» Offerings</span></div><div class="ss">CLOUD Act bleibt – sorgfältige Vertragsprüfung nötig</div></div>
+    <div id="eu-wash"></div>
+  </div>
+
+  <!-- GAIA-X -->
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">GAIA-X & Initiativen</span><span class="en">GAIA-X & Initiatives</span></div><div class="ss">Standards · Frameworks · Data Spaces</div></div>
+    <div id="eu-gaiax"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ DACH SI/SP ════════════════════════════════ -->
+<div class="view" id="view-si">
+  <div class="hero">
+    <div class="hero-eye">DACH · System Integrators & Solution Providers · Cloud Native</div>
+    <div class="hero-h"><span class="de">DACH <em>Implementierer</em></span><span class="en">DACH <em>Implementers</em></span></div>
+    <div class="hero-sub"><span class="de">Diese Firmen bauen was OEC strategisiert. Sie sind Klienten und Partner zugleich.</span><span class="en">These companies build what OEC strategises. They are clients and partners at once.</span></div>
+    <div class="hero-meta">
+      <div><div class="hml"><span class="de">Tier 1 (Gross / National)</span><span class="en">Tier 1 (Large / National)</span></div><div class="hmv"><span class="de">Enterprise SI mit >500 MA</span><span class="en">Enterprise SI with >500 employees</span></div></div>
+      <div><div class="hml"><span class="de">Tier 2 (Cloud Native Spezialisten)</span><span class="en">Tier 2 (Cloud Native Specialists)</span></div><div class="hmv">50–500 MA, CNCF-aktiv</div></div>
+      <div><div class="hml"><span class="de">Tier 3 (Boutique / Regional)</span><span class="en">Tier 3 (Boutique / Regional)</span></div><div class="hmv">5–50 MA, OEC Primärzielgruppe</div></div>
+    </div>
+  </div>
+
+  <div class="ibox" style="margin:20px 28px">
+    <p><strong>OEC-Perspektive:</strong> DACH System Integrators sind <em>Klienten und potenzielle OEC-Netzwerk-Mitglieder zugleich</em>. Tier-2 und Tier-3-Firmen sind die primäre OEC-Zielgruppe: Sie haben exzellente technische Kompetenz, aber systematisch unterentwickelte Partner-Ecosystem-Strukturen. Ihr Assessment-Score liegt typischerweise bei 8–22 von 75 Punkten.</p>
+  </div>
+
+  <div class="search-bar"><input class="search-input" placeholder="SI/SP suchen... / Search SI/SP..." oninput="searchSI(this.value)" id="si-search"/></div>
+
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Tier 1 – Grosse Enterprise SI</span><span class="en">Tier 1 – Large Enterprise SI</span></div><div class="ss"><span class="de">National · >500 MA · Etabliert</span><span class="en">National · >500 employees · Established</span></div></div>
+    <div class="si-grid" id="si-t1"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Tier 2 – Cloud Native Spezialisten</span><span class="en">Tier 2 – Cloud Native Specialists</span></div><div class="ss"><span class="de">CNCF-aktiv · 50–500 MA · Hohe Expertise</span><span class="en">CNCF-active · 50–500 employees · High expertise</span></div></div>
+    <div class="si-grid" id="si-t2"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Tier 3 – Boutique & Regional</span><span class="en">Tier 3 – Boutique & Regional</span></div><div class="ss"><span class="de">5–50 MA · OEC-Primärzielgruppe · Höchstes Potenzial</span><span class="en">5–50 employees · OEC Primary Target · Highest Potential</span></div></div>
+    <div class="si-grid" id="si-t3"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ DACH ISV HERSTELLER ═══════════════════════════ -->
+<div class="view" id="view-isv">
+  <div class="hero">
+    <div class="hero-eye">DACH · Cloud Native Software Hersteller · ISV</div>
+    <div class="hero-h"><span class="de">Made in <em>DACH</em></span><span class="en">Made in <em>DACH</em></span></div>
+    <div class="hero-sub"><span class="de">Diese Firmen bauen Cloud Native Software – und haben Partner-Programme die OEC-Klienten nutzen sollten.</span><span class="en">These companies build Cloud Native Software – and have partner programmes OEC clients should use.</span></div>
+    <div class="hero-meta">
+      <div><div class="hml"><span class="de">Etabliert (>50 MA)</span><span class="en">Established (>50 employees)</span></div><div class="hmv"><span class="de">Reife Partner-Programme</span><span class="en">Mature partner programmes</span></div></div>
+      <div><div class="hml"><span class="de">Scale-up (10–50 MA)</span><span class="en">Scale-up (10–50 employees)</span></div><div class="hmv"><span class="de">Aktive MDF-Budgets</span><span class="en">Active MDF budgets</span></div></div>
+      <div><div class="hml"><span class="de">Startup (<10 MA)</span><span class="en">Startup (<10 employees)</span></div><div class="hmv"><span class="de">Early Partner-Programme · Hohe Bereitschaft</span><span class="en">Early partner programmes · High willingness</span></div></div>
+    </div>
+  </div>
+  <div class="ibox" style="margin:20px 28px">
+    <p><strong>OEC-Perspektive:</strong> DACH ISVs sind eine doppelte Opportunity: Als <em>Partner-Programm-Anbieter</em> (OEC-Klienten können mit ihnen co-sellen) und als <em>Klienten</em> (sie brauchen selbst Partner-Ecosystem-Aufbau). Viele dieser Firmen haben exzellente Technologie aber unterentwickelte Partnerstrukturen – klassische Stufe 1–2 im OEC-Assessment.</p>
+  </div>
+  <div class="search-bar"><input class="search-input" placeholder="DACH ISV suchen... / Search ISV..." oninput="searchISV(this.value)" id="isv-search"/></div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Orchestration & Kubernetes Plattformen</span><span class="en">Orchestration & Kubernetes Platforms</span></div><div class="ss"><span class="de">Die Infrastruktur-Schicht</span><span class="en">The infrastructure layer</span></div></div>
+    <div class="si-grid" id="isv-orch"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Observability & Monitoring</span><span class="en">Observability & Monitoring</span></div><div class="ss"><span class="de">Sehen was läuft</span><span class="en">See what runs</span></div></div>
+    <div class="si-grid" id="isv-obs"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Security & Compliance</span><span class="en">Security & Compliance</span></div><div class="ss"><span class="de">Sicher in der Cloud</span><span class="en">Secure in the cloud</span></div></div>
+    <div class="si-grid" id="isv-sec"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Platform Engineering & Developer Tools</span><span class="en">Platform Engineering & Developer Tools</span></div><div class="ss"><span class="de">Interne Entwicklerplattformen</span><span class="en">Internal developer platforms</span></div></div>
+    <div class="si-grid" id="isv-plat"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Daten, Storage & Messaging</span><span class="en">Data, Storage & Messaging</span></div><div class="ss"><span class="de">State und Datenfluss</span><span class="en">State and data flow</span></div></div>
+    <div class="si-grid" id="isv-data"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">CI/CD, IaC & Automation</span><span class="en">CI/CD, IaC & Automation</span></div><div class="ss"><span class="de">Liefern und automatisieren</span><span class="en">Deliver and automate</span></div></div>
+    <div class="si-grid" id="isv-cicd"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">Networking, Service Mesh & Konnektivität</span><span class="en">Networking, Service Mesh & Connectivity</span></div><div class="ss"><span class="de">Verbinden und schützen</span><span class="en">Connect and protect</span></div></div>
+    <div class="si-grid" id="isv-net"></div>
+  </div>
+  <div class="section">
+    <div class="sh"><div class="st"><span class="de">AI / ML Cloud Native</span><span class="en">AI / ML Cloud Native</span></div><div class="ss"><span class="de">Intelligenz in der Cloud</span><span class="en">Intelligence in the cloud</span></div></div>
+    <div class="si-grid" id="isv-ai"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ OEC STRATEGY ══════════════════════════════ -->
+<div class="view" id="view-strategy">
+  <div class="hero">
+    <div class="hero-eye">Open Ecosystem Collective · Conquest Map</div>
+    <div class="hero-h"><span class="de">Das Ökosystem <em>erobern</em></span><span class="en">Conquer the <em>Ecosystem</em></span></div>
+    <div class="hero-sub"><span class="de">120+ Vendors. 34 Targets. Eine Methodik. Vier Sprachen. Jetzt.</span><span class="en">120+ Vendors. 34 Targets. One methodology. Four languages. Now.</span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" style="color:var(--gold)">34</div><div class="stat-l"><span class="de">OEC Prioritäts-Targets</span><span class="en">OEC Priority Targets</span></div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--foss)">USD 50K</div><div class="stat-l"><span class="de">Max MDF / Firma / Jahr</span><span class="en">Max MDF / Company / Year</span></div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--dusk)">800+</div><div class="stat-l"><span class="de">CNCF Mitglieder</span><span class="en">CNCF Members</span></div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--sage)">4</div><div class="stat-l"><span class="de">Sprachen = 4 Märkte</span><span class="en">Languages = 4 Markets</span></div></div>
+  </div>
+  <div style="padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(212,160,23,.3);border-radius:8px;padding:22px;grid-column:1/-1">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--moon);margin-bottom:6px">Die Sovereignity-Welle ist OEC's grösste Chance</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:14px">Warum jetzt · 2026</div>
+      <p style="font-size:13px;color:var(--mist);line-height:1.7">Die Debatte um digitale Souveränität verändert den DACH-Markt fundamental. <strong style="color:var(--moon)">DACH-Firmen wechseln Provider</strong> – und brauchen jemanden der erklärt welcher europäische Anbieter was kann und welche Partner-Programme existieren. Der US CLOUD Act, die neue EU Cloud & AI Act-Regulierung und GAIA-X schaffen einen <strong style="color:var(--moon)">enormen Beratungsbedarf</strong> der genau in OEC's Nische fällt: Partner Ecosystem Assessment in einem sich verändernden Markt.</p>
+    </div>
+    <div style="background:rgba(22,163,74,.04);border:1px solid rgba(22,163,74,.25);border-radius:8px;padding:22px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--moon);margin-bottom:6px">Tier 1 – Strike First</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--foss);margin-bottom:14px">Höchstes MDF · Sofort</div>
+      <div style="font-size:12px;color:var(--mist);line-height:1.65">
+        <div style="padding:9px 0;border-bottom:1px solid rgba(42,32,53,.8)"><span style="color:var(--gold);font-weight:700">1. HashiCorp/IBM</span> – MDF USD 5–25K. Jedes DACH-Unternehmen nutzt Terraform/Vault. Warm entry via Tania's Adfinis-Netzwerk.</div>
+        <div style="padding:9px 0;border-bottom:1px solid rgba(42,32,53,.8)"><span style="color:var(--gold);font-weight:700">2. Datadog</span> – MDF USD 10–40K. Dominant in Observability. Swiss firms massiv unterrepräsentiert als Partner.</div>
+        <div style="padding:9px 0;border-bottom:1px solid rgba(42,32,53,.8)"><span style="color:var(--gold);font-weight:700">3. Isovalent/Cisco</span> – MDF USD 5–15K. Tania hat bestehende Beziehung (Adfinis Partnership Announcement). Warmster Einstieg.</div>
+        <div style="padding:9px 0"><span style="color:var(--gold);font-weight:700">4. Grafana Labs</span> – MDF USD 5–20K. DACH unterentwickelt. Open Source-Wurzeln = einfacher Einstieg in Community.</div>
+      </div>
+    </div>
+    <div style="background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.25);border-radius:8px;padding:22px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--moon);margin-bottom:6px">Tier 2 – Build Pipeline</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--oss);margin-bottom:14px">60–90 Tage Horizont</div>
+      <div style="font-size:12px;color:var(--mist);line-height:1.65">
+        <div style="padding:9px 0;border-bottom:1px solid rgba(42,32,53,.8)"><span style="color:var(--moon);font-weight:700">5. SUSE/Rancher</span> – Deutsch, DACH-stark, Kubernetes-first. Partner-Programm in Transformation = perfektes Timing.</div>
+        <div style="padding:9px 0;border-bottom:1px solid rgba(42,32,53,.8)"><span style="color:var(--moon);font-weight:700">6. Red Hat/IBM</span> – Grösstes Enterprise Kubernetes. Komplexität schafft Advisory-Bedarf für OEC.</div>
+        <div style="padding:9px 0;border-bottom:1px solid rgba(42,32,53,.8)"><span style="color:var(--moon);font-weight:700">7. Dynatrace</span> – Österreichisch, DACH-nativ. Sprachvorteil (DE) massiv. Direkter Wettbewerber zu Datadog.</div>
+        <div style="padding:9px 0"><span style="color:var(--moon);font-weight:700">8. Exoscale / Cloudscale</span> – Schweizer Sovereign Cloud Anbieter. OEC hilft DACH-Klienten diese zu navigieren.</div>
+      </div>
+    </div>
+    <div style="background:rgba(147,51,234,.04);border:1px solid rgba(147,51,234,.25);border-radius:8px;padding:22px;grid-column:1/-1">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--moon);margin-bottom:6px">90-Tage Conquest Plan</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--hybrid);margin-bottom:16px">Schritt für Schritt</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div style="background:rgba(255,255,255,.02);border:1px solid var(--shadow);border-radius:6px;padding:14px">
+          <div style="font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:9px">Monat 1</div>
+          <div style="font-size:12px;color:var(--mist);line-height:1.65">→ EF anmelden (CHF 150)<br/>→ LinkedIn-Profil neu<br/>→ Isovalent reaktivieren<br/>→ HashiCorp Partner-Portal<br/>→ GitHub Org + Assessment CC-BY-SA</div>
+        </div>
+        <div style="background:rgba(255,255,255,.02);border:1px solid var(--shadow);border-radius:6px;padding:14px">
+          <div style="font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:9px">Monat 2</div>
+          <div style="font-size:12px;color:var(--mist);line-height:1.65">→ Erstes Discovery Sprint CHF 1'400<br/>→ Case Study auf GitHub<br/>→ Datadog Partner registrieren<br/>→ Grafana Labs Gespräch<br/>→ KubeCon Talk-Proposal</div>
+        </div>
+        <div style="background:rgba(255,255,255,.02);border:1px solid var(--shadow);border-radius:6px;padding:14px">
+          <div style="font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:9px">Monat 3</div>
+          <div style="font-size:12px;color:var(--mist);line-height:1.65">→ Netzwerk-Mitglied Stufe 1<br/>→ SUSE / Red Hat Pipeline<br/>→ Methodik v1.0 taggen<br/>→ 3 Folgemandate bestätigen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════════════════
+
+// ── VENDOR DATA (condensed for performance) ────────────────────────
+const VENDORS = [
+  // Orchestration
+  {id:"k8s",name:"Kubernetes",type:"foss",cat:"Orchestration",tags:["CNCF Graduated","Orchestration"],oec:true,mdf:"USD 10K–50K via Cloud-Partner",desc:"Der De-facto-Standard für Container-Orchestrierung. Jede Cloud Native Firma baut darauf auf – Grundlage jedes Partner-Gesprächs."},
+  {id:"helm",name:"Helm",type:"foss",cat:"Orchestration",tags:["CNCF Graduated","Package Mgr"],oec:false,mdf:"Via Cloud Vendor MDF",desc:"Package Manager für Kubernetes. Jede App wird als Helm Chart geliefert."},
+  {id:"argo",name:"Argo CD",type:"foss",cat:"Orchestration",tags:["CNCF Graduated","GitOps"],oec:true,mdf:"Via Akuity",desc:"Führendes GitOps-Tool. Akuity bietet kommerzielles Backing mit Partner-Programm."},
+  {id:"flux",name:"Flux",type:"foss",cat:"Orchestration",tags:["CNCF Graduated","GitOps"],oec:false,mdf:"Kein direktes MDF",desc:"GitOps-CD für Kubernetes. CNCF graduated."},
+  {id:"rancher",name:"Rancher / SUSE",type:"hybrid",cat:"Orchestration",tags:["Enterprise","Kubernetes","DACH"],oec:true,mdf:"USD 8K–30K",desc:"Enterprise Kubernetes-Plattform. Deutsche Wurzeln, starke DACH-Präsenz. Aktives Partner-Programm in Transformation – perfektes OEC-Timing."},
+  {id:"openshift",name:"OpenShift / Red Hat",type:"hybrid",cat:"Orchestration",tags:["Enterprise","Kubernetes"],oec:true,mdf:"USD 15K–50K",desc:"Enterprise Kubernetes by Red Hat (IBM). Komplexität schafft massiven Advisory-Bedarf."},
+  {id:"crossplane",name:"Crossplane",type:"foss",cat:"Orchestration",tags:["CNCF Graduated","IaC"],oec:false,mdf:"Via Upbound",desc:"Cloud-native Control Plane Framework. CNCF graduated. Upbound bietet kommerzielle Unterstützung."},
+  // Observability
+  {id:"prometheus",name:"Prometheus",type:"foss",cat:"Observability",tags:["CNCF Graduated","Metrics"],oec:false,mdf:"Via Grafana/Datadog",desc:"Der Standard für Metriken. CNCF graduated. Kein direktes Partner-Programm – Opportunity via kommerzielle Distributionen."},
+  {id:"grafana",name:"Grafana Labs",type:"hybrid",cat:"Observability",tags:["Observability","OSS Core"],oec:true,mdf:"USD 5K–20K",desc:"Dominante Observability-Plattform. DACH unterentwickelt. Wachsendes Partner-Programm – OEC Top-Priorität."},
+  {id:"datadog",name:"Datadog",type:"closed",cat:"Observability",tags:["APM","Monitoring"],oec:true,mdf:"USD 10K–40K",desc:"Führende kommerzielle Observability-Plattform. Sehr aktives MDF-Programm. Schweizer Firmen massiv unterrepräsentiert als Partner."},
+  {id:"dynatrace",name:"Dynatrace",type:"closed",cat:"Observability",tags:["APM","AI","Österreich"],oec:true,mdf:"USD 10K–35K",desc:"Österreichische Firma, DACH-nativ. KI-gestützte Observability. Sprachvorteil (DE) für OEC massiv."},
+  {id:"elastic",name:"Elastic",type:"hybrid",cat:"Observability",tags:["Search","Logs","SSPL"],oec:true,mdf:"USD 5K–20K",desc:"Elasticsearch, Kibana, Logstash. SSPL-Lizenz. Starke DACH-Präsenz."},
+  {id:"otel",name:"OpenTelemetry",type:"foss",cat:"Observability",tags:["CNCF Graduated","Tracing"],oec:false,mdf:"Via Vendor-Implementierungen",desc:"Vendor-neutrales Observability-Framework. CNCF graduated. Standard-API für Traces, Metriken, Logs."},
+  {id:"splunk",name:"Splunk / Cisco",type:"closed",cat:"Observability",tags:["SIEM","Logs","Enterprise"],oec:true,mdf:"USD 15K–50K",desc:"Von Cisco 2024 übernommen. Enterprise Log und SIEM. Komplexität schafft Advisory-Opportunity."},
+  {id:"newrelic",name:"New Relic",type:"hybrid",cat:"Observability",tags:["Observability","Full-Stack"],oec:true,mdf:"USD 5K–15K",desc:"Full-Stack Observability. Aktives Partner-Programm mit klarem MDF-Prozess."},
+  // Security
+  {id:"vault",name:"HashiCorp Vault",type:"hybrid",cat:"Security",tags:["Secrets","IBM"],oec:true,mdf:"USD 5K–25K",desc:"Secrets Management. Teil von HashiCorp (jetzt IBM). Terraform, Vault, Consul zusammen. Starkes DACH-Partner-Programm. OEC Top-1-Priorität."},
+  {id:"falco",name:"Falco / Sysdig",type:"hybrid",cat:"Security",tags:["CNCF Graduated","Runtime"],oec:true,mdf:"USD 8K–25K",desc:"Cloud-native Runtime Security. CNCF graduated. Sysdig bietet kommerzielles Backing und Partner-Programm."},
+  {id:"snyk",name:"Snyk",type:"hybrid",cat:"Security",tags:["Dev Security","SBOM"],oec:true,mdf:"USD 5K–15K",desc:"Developer Security Platform. Code, Container, IaC Scanning. Aktives Partner-Programm."},
+  {id:"paloalto",name:"Palo Alto / Prisma",type:"closed",cat:"Security",tags:["CNAPP","Zero Trust"],oec:true,mdf:"USD 10K–40K",desc:"Prisma Cloud: führende CNAPP. Sehr grosses Partner-Programm mit signifikantem MDF."},
+  {id:"wiz",name:"Wiz",type:"closed",cat:"Security",tags:["CNAPP","Cloud Security"],oec:true,mdf:"USD 10K–40K",desc:"Am schnellsten wachsende Cloud-Security-Firma. Massives Partner-Programm. DACH-Firmen fragen immer öfter nach Wiz."},
+  {id:"crowdstrike",name:"CrowdStrike",type:"closed",cat:"Security",tags:["Falcon","EDR"],oec:true,mdf:"USD 10K–35K",desc:"Leading Endpoint + Cloud Security. Grosses Falcon Partner Ecosystem mit MDF."},
+  // Networking
+  {id:"cilium",name:"Cilium / Isovalent",type:"hybrid",cat:"Service Mesh & Networking",tags:["CNI","eBPF","CNCF"],oec:true,mdf:"USD 5K–15K",desc:"eBPF-basiertes CNI. CNCF graduated. Tania hat bestehende Beziehung via Adfinis – wärmster Einstieg verfügbar."},
+  {id:"istio",name:"Istio",type:"foss",cat:"Service Mesh & Networking",tags:["CNCF Graduated","Service Mesh"],oec:false,mdf:"Via Solo.io/Google",desc:"Dominierendes Service Mesh. CNCF graduated. Verschiedene kommerzielle Distributionen."},
+  {id:"kong",name:"Kong",type:"hybrid",cat:"Service Mesh & Networking",tags:["API Gateway","Mesh"],oec:true,mdf:"USD 5K–20K",desc:"API Gateway und Service Connectivity. OSS Core, Kong Konnect kommerziell. Wachsendes Partner-Programm."},
+  {id:"cloudflare",name:"Cloudflare",type:"closed",cat:"Service Mesh & Networking",tags:["CDN","Zero Trust","Edge"],oec:true,mdf:"USD 5K–20K",desc:"CDN, Zero Trust und Edge Computing. Wachsendes Partner-Programm. DACH-Firmen unternutzen Partnership-Potenzial."},
+  // Data
+  {id:"minio",name:"MinIO",type:"hybrid",cat:"Data & Storage",tags:["Object Storage","S3-compat"],oec:true,mdf:"USD 5K–15K",desc:"S3-kompatibler Object Storage. DACH-beliebt für Datensouveränität. Wachsendes Partner-Programm."},
+  {id:"mongodb",name:"MongoDB",type:"hybrid",cat:"Data & Storage",tags:["NoSQL","Document"],oec:true,mdf:"USD 10K–30K",desc:"Führende Dokumentendatenbank. Aktives Partner-Programm mit MDF. Starke DACH-Präsenz."},
+  {id:"kafka",name:"Apache Kafka / Confluent",type:"hybrid",cat:"Data & Storage",tags:["Streaming","Messaging"],oec:true,mdf:"USD 5K–20K",desc:"Distributed Event Streaming. Apache Kafka (FOSS) + Confluent Platform (kommerziell). Aktives Partner-Programm."},
+  {id:"postgresql",name:"PostgreSQL",type:"foss",cat:"Data & Storage",tags:["SQL","FOSS"],oec:false,mdf:"Via Managed Services (EDB/Crunchy)",desc:"Fortschrittlichste Open Source-Relationaldatenbank. Partner-Opportunities via Managed-Service-Provider."},
+  // CI/CD
+  {id:"github",name:"GitHub / Actions",type:"closed",cat:"CI/CD & DevOps",tags:["SCM","CI","Microsoft"],oec:true,mdf:"Via GitHub Partner Programme",desc:"Dominante Code-Hosting und CI/CD-Plattform. Microsoft-owned. Breites Partner-Ökosystem."},
+  {id:"gitlab",name:"GitLab",type:"hybrid",cat:"CI/CD & DevOps",tags:["DevOps","CI/CD"],oec:true,mdf:"USD 5K–20K",desc:"Komplette DevOps-Plattform. Community Edition FOSS. Starke DACH-Präsenz und aktives Partner-Programm."},
+  {id:"terraform",name:"Terraform / OpenTofu",type:"hybrid",cat:"CI/CD & DevOps",tags:["IaC","HashiCorp"],oec:true,mdf:"USD 5K–25K",desc:"Infrastructure-as-Code. HashiCorp wechselte zu BSL; Community forkte zu OpenTofu (FOSS). OEC kann helfen Klienten den Wechsel zu navigieren."},
+  {id:"ansible",name:"Ansible / Red Hat",type:"hybrid",cat:"CI/CD & DevOps",tags:["Automation","IaC"],oec:true,mdf:"Via Red Hat Partner",desc:"IT Automation. Community Ansible (FOSS) + Red Hat Ansible Automation Platform. MDF via Red Hat."},
+  {id:"backstage",name:"Backstage / Spotify",type:"foss",cat:"CI/CD & DevOps",tags:["CNCF","IDP","Developer Portal"],oec:true,mdf:"Via CNCF Member Vendors",desc:"Internal Developer Portal Framework. CNCF. Von Spotify. Wächst rasant. Grosse Advisory-Opportunity."},
+  // Cloud
+  {id:"aws",name:"AWS",type:"closed",cat:"Hyperscaler",tags:["31% Marktanteil","38 Regionen"],oec:true,mdf:"USD 20K–100K",desc:"Weltgrösster Cloud-Anbieter. 31% Marktanteil. Massives AWS Partner Network. OEC Top-Priorität für Assessment-Readiness."},
+  {id:"azure",name:"Microsoft Azure",type:"closed",cat:"Hyperscaler",tags:["24% Marktanteil","70+ Regionen"],oec:true,mdf:"USD 15K–80K",desc:"24% Marktanteil. Microsoft Cloud Partner Programme. Starke DACH-Enterprise-Präsenz."},
+  {id:"gcp",name:"Google Cloud",type:"closed",cat:"Hyperscaler",tags:["10% Marktanteil","Kubernetes-Heimat"],oec:true,mdf:"USD 10K–60K",desc:"CNCF-Gründungsmitglied. Kubernetes-Heimat. Google Cloud Partner Advantage."},
+  {id:"oracle",name:"Oracle Cloud (OCI)",type:"closed",cat:"Hyperscaler",tags:["Am schnellsten wachsend","50+ Regionen"],oec:true,mdf:"USD 10K–40K",desc:"Am schnellsten wachsender Hyperscaler. Starkes EU Sovereign Cloud Angebot. Oracle Partner Network aktiv."},
+  {id:"ibmcloud",name:"IBM Cloud",type:"hybrid",cat:"Hyperscaler",tags:["Hybrid","AI","Red Hat"],oec:true,mdf:"USD 10K–40K",desc:"Hybrid Cloud Fokus. Red Hat Akquisition treibt OpenShift-Adoption. Grosses Enterprise Partner-Programm."},
+  {id:"exoscale",name:"Exoscale",type:"closed",cat:"Sovereign Cloud",tags:["Schweiz","FINMA","Sovereign"],oec:true,mdf:"Exoscale Partner Programme",desc:"Schweizer Cloud-Anbieter (A1 Group). FINMA-konform. Datenspeicherung in der Schweiz. Hochrelevant für regulierte Schweizer Sektoren."},
+  {id:"cloudscale",name:"cloudscale.ch",type:"closed",cat:"Sovereign Cloud",tags:["Schweiz","KMU","Sovereign"],oec:true,mdf:"Wachsendes Partner-Programm",desc:"Schweizer IaaS. ISO 27001, GDPR. Stark bei Schweizer KMU und Tech-Firmen."},
+  {id:"ovh",name:"OVHcloud",type:"closed",cat:"Sovereign Cloud",tags:["Europäisch","Sovereign"],oec:true,mdf:"OVHcloud Partner Programme",desc:"Grösster europäischer Cloud-Anbieter. 43 Rechenzentren in 9 Ländern. GDPR-nativ. Wachsendes DACH-Partner-Programm."},
+  {id:"plusserver",name:"plusserver",type:"closed",cat:"Sovereign Cloud",tags:["Deutsch","BSI C5","Sovereign"],oec:true,mdf:"plusserver Partner Programme",desc:"Deutscher Sovereign Cloud. BSI C5 zertifiziert. GDPR-nativ. Für deutsche regulierte Klienten hochrelevant."},
+  // Hardware
+  {id:"cisco",name:"Cisco Systems",type:"hybrid",cat:"Network & Hardware",tags:["Networking","27% Share"],oec:true,mdf:"USD 15K–50K",desc:"Globaler Networking-Leader. Splunk akquiriert. 27% Ethernet-Marktanteil. Grosses Partner-Ökosystem mit signifikantem MDF."},
+  {id:"arista",name:"Arista Networks",type:"hybrid",cat:"Network & Hardware",tags:["Data Centre","AI","18.9% Share"],oec:true,mdf:"USD 10K–30K",desc:"Cloud Networking Leader. 18.9% DC-Ethernet-Share. EOS (Open Source). Wachsendes AI Networking Portfolio."},
+  {id:"nvnet",name:"NVIDIA Networking",type:"closed",cat:"Network & Hardware",tags:["AI","25.9% Share","Spectrum-X"],oec:true,mdf:"NVIDIA Partner Programme",desc:"25.9% DC-Ethernet-Share (Q2 2025, +647% YoY). Spectrum-X AI Networking. InfiniBand für AI-Cluster."},
+  {id:"broadcom",name:"Broadcom / VMware",type:"closed",cat:"Network & Hardware",tags:["Silicon","VMware"],oec:true,mdf:"USD 10K–30K",desc:"Dominanter Networking-Silicon-Anbieter. VMware akquiriert 2024. Grosser Advisory-Bedarf für Klienten die VMware-Transition navigieren."},
+  {id:"dell",name:"Dell Technologies",type:"closed",cat:"Network & Hardware",tags:["Compute","Storage","APEX"],oec:true,mdf:"USD 10K–40K",desc:"Dell PowerEdge, PowerStore, APEX Cloud. Grosses Channel-Partner-Programm mit MDF. Starkes DACH-Reseller-Netzwerk."},
+  {id:"hpe",name:"HPE / Juniper",type:"closed",cat:"Network & Hardware",tags:["Compute","GreenLake","Juniper"],oec:true,mdf:"USD 10K–40K",desc:"HPE GreenLake Hybrid Cloud. Juniper Networking akquiriert. Grosses Partner-Programm. Advisory-Opportunity für HPE/Juniper-Portfolio-Navigation."},
+  // Platform
+  {id:"humanitec",name:"Humanitec",type:"hybrid",cat:"Platform Engineering",tags:["IDP","Berlin","Platform Eng"],oec:true,mdf:"Humanitec Partner Programme",desc:"Internal Developer Platform Orchestrator. Berliner Firma. OEC kann Klienten bei IDP-Readiness-Assessment unterstützen."},
+];
+
+// ── EU SOVEREIGN DATA ────────────────────────────────────────────────
+const EU_FULL = [
+  {flag:"🇨🇭",name:"Exoscale",hq:"Schweiz (A1 Group) · Wien & Zürich",sov:"high",
+   tags:["FINMA-konform","ISO 27001","7 Rechenzentren DACH"],oec:true,
+   desc:"Schweizer Cloud-Anbieter. 7 Rechenzentren in CH, AT, DE. Vollständig unter EU/CH-Recht. FINMA-konform – ideal für Schweizer Banken und Versicherungen. Managed Kubernetes, DBaaS, Object Storage."},
+  {flag:"🇨🇭",name:"cloudscale.ch",hq:"Schweiz · Zürich / Genf",sov:"high",
+   tags:["Swiss Made","ISO 27001","Kubernetes managed"],oec:true,
+   desc:"Rein schweizer IaaS-Anbieter. Rechenzentren ausschliesslich in der Schweiz. Keine ausländischen Eigentümer. Stark bei Schweizer KMU und Tech-Firmen."},
+  {flag:"🇨🇭",name:"Nine Internet Solutions",hq:"Schweiz · Zürich",sov:"high",
+   tags:["Swiss Made","Deploio PaaS","Application Platform"],oec:false,
+   desc:"Schweizer Application Platform (Deploio). Colocation und Managed Hosting. Zwei Rechenzentren in der Zürcher Region. Keine ausländische Abhängigkeit."},
+  {flag:"🇩🇪",name:"Hetzner",hq:"Deutschland · Gunzenhausen / Helsinki",sov:"high",
+   tags:["Made in Germany","Budget-freundlich","Bare Metal"],oec:false,
+   desc:"Deutscher Rechenzentrum- und Cloud-Anbieter. EU-Eigentümer, EU-Recht. Sehr beliebt bei Startups und Engineers. Kein formelles Partner-Programm oder MDF – kein direktes OEC-Target."},
+  {flag:"🇩🇪",name:"plusserver",hq:"Deutschland · Köln",sov:"high",
+   tags:["BSI C5","GDPR-nativ","Sovereign"],oec:true,
+   desc:"Deutscher Sovereign Cloud. BSI C5 zertifiziert. Kubernetes-basiert, GDPR-nativ. Für deutsche regulierte Klienten (Finanz, Gesundheit, Behörden) hochrelevant. Wachsendes OEC-Partner-Programm."},
+  {flag:"🇩🇪",name:"STACKIT (Schwarz Group)",hq:"Deutschland · Neckarsulm",sov:"high",
+   tags:["German Cloud","Schwarz/Lidl","BSI"],oec:false,
+   desc:"Cloud-Plattform von Schwarz Group (Lidl/Kaufland). DACH-fokussiert. Wachsend mit ServiceNow/Salesforce-Partnerschaften. Limitiertes Partner-Ökosystem aktuell."},
+  {flag:"🇩🇪",name:"Open Telekom Cloud",hq:"Deutschland · Telekom",sov:"high",
+   tags:["Deutsche Telekom","OpenStack","GDPR"],oec:false,
+   desc:"OpenStack-basierte Cloud von Deutschen Telekom. EU-Eigentümer, Rechenzentren in Deutschland. ISO 27001, BSI C5."},
+  {flag:"🇫🇷",name:"OVHcloud",hq:"Frankreich · Roubaix",sov:"high",
+   tags:["Grösster EU-Anbieter","43 DC","9 Länder"],oec:true,
+   desc:"Grösster europäischer Cloud-Anbieter. 43 Rechenzentren in 9 Ländern. Vollständig unter EU-Recht. GDPR-nativ. Wachsendes DACH-Partner-Programm – OEC-Target."},
+  {flag:"🇫🇷",name:"Scaleway",hq:"Frankreich · Paris (Iliad Group)",sov:"high",
+   tags:["EU-Souverän","Developer-freundlich"],oec:false,
+   desc:"Europäischer Cloud-Anbieter, Iliad-Gruppe. Fokus auf EU-Unabhängigkeit und Open Source. Wächst in Frankreich und BeNeLux."},
+  {flag:"🇦🇹",name:"A1 Digital",hq:"Österreich · Wien",sov:"high",
+   tags:["DACH","Österreich","Telco Cloud"],oec:false,
+   desc:"Cloud-Plattform von A1 Telekommunikation (Mutter von Exoscale). Österreich-fokussiert. Für österreichische Klienten von OEC relevant."},
+  {flag:"🇩🇪",name:"datacenter.one",hq:"Deutschland · München",sov:"high",
+   tags:["Colo","BSI","Sovereign"],oec:true,
+   desc:"Deutsches Sovereign Colocation. BSI-zertifiziert. Für deutsche Klienten mit lokaler Datenspeicherungspflicht relevant. OEC kann bei Provider-Assessment helfen."},
+  {flag:"🇨🇭",name:"Green (Swiss Colo)",hq:"Schweiz · Wallisellen",sov:"high",
+   tags:["100% Erneuerbar","Swiss Made","ISO 27001"],oec:true,
+   desc:"Schweizer Colocation mit 100% erneuerbarer Energie. Schweizer Datensouveränität. Relevant für OEC-Klienten in regulierten Schweizer Sektoren."},
+];
+
+const EU_PARTIAL = [
+  {flag:"🌍",name:"IONOS (United Internet)",hq:"Deutschland · Montabaur",sov:"mid",
+   tags:["DACH-stark","1&1","Hybrid"],oec:false,
+   desc:"Deutsche IONOS-Gruppe (United Internet). EU-Eigentümer, Rechenzentren in DE/ES. Starker SME-Fokus in DACH. Limitiertes Cloud Native Portfolio."},
+  {flag:"🌍",name:"T-Systems (Telekom)",hq:"Deutschland · Frankfurt",sov:"mid",
+   tags:["Enterprise","Open Telekom Cloud","BSI"],oec:true,
+   desc:"IT-Tochter der Deutschen Telekom. Sovereign Cloud Angebote für Bundesbehörden und regulierte Branchen. Partner-Programm für OEC interessant."},
+  {flag:"🌍",name:"Telekom IT (DE)",hq:"Deutschland",sov:"mid",
+   tags:["Sovereign","Public Sector","DACH"],oec:false,
+   desc:"Sovereign Cloud Initiative der Deutschen Telekom für den öffentlichen Sektor. Zertifizierungen nach BSI IT-Grundschutz."},
+  {flag:"🌍",name:"Swisscom",hq:"Schweiz · Bern",sov:"mid",
+   tags:["Schweizer Telco","FINMA adjacent","KMU"],oec:true,
+   desc:"Schweizer Staatstelekomfirma. Cloud-Angebote mit Datenspeicherung in der Schweiz. Für KMU-Klienten von OEC relevant. Partner-Programm für MSPs aktiv."},
+  {flag:"🌍",name:"Equinix",hq:"USA / Global (260 DC)",sov:"mid",
+   tags:["Global Colo","Neutral","IBX"],oec:true,
+   desc:"Weltgrösster Colo-Anbieter. 260+ Rechenzentren in 33 Ländern, davon viele in DACH (Frankfurt, Zürich, Wien, München). US-Eigentümer, aber carrier-neutral. Equinix Partner Programme aktiv."},
+  {flag:"🌍",name:"NTT Global DC",hq:"Japan / Global",sov:"mid",
+   tags:["Global Colo","DE-CIX","DACH"],oec:false,
+   desc:"Grosser globaler Colo-Anbieter. Carrier-neutral. DE-CIX-verbunden. Starke Nachhaltigkeitscommitments. Japanese ownership = kein direktes US-CLOUD-Act Risiko."},
+];
+
+const EU_WASH = [
+  {flag:"🇺🇸",name:"AWS EU Sovereign Cloud",hq:"USA (geplant DE 2026)",sov:"low",
+   tags:["CLOUD Act bleibt","Geplant","EUR 7.8Mrd."],oec:true,
+   desc:"EUR 7.8 Milliarden Investition in Deutschland bis 2040. Technisch getrennt von anderen AWS-Regionen. ABER: US-Eigentümer, CLOUD Act gilt weiterhin – europäische Behörden können trotzdem auf Daten zugreifen. OEC muss Klienten über dieses Risiko aufklären."},
+  {flag:"🇺🇸",name:"Microsoft Azure Sovereign",hq:"USA / EU Datengrenzen",sov:"low",
+   tags:["CLOUD Act bleibt","EU Data Boundary","70+ Regionen"],oec:true,
+   desc:"Microsoft EU Data Boundary verspricht Datenspeicherung in der EU. ABER: Microsoft-Beschäftigte in den USA können Support leisten = CLOUD Act-Risiko. Oracle und EU-Regulierer haben Bedenken geäussert. OEC-Advisory: sorgfältige Vertragsprüfung."},
+  {flag:"🇺🇸",name:"Google Cloud Sovereign",hq:"USA / EU Partnerships",sov:"low",
+   tags:["CLOUD Act bleibt","Sovereign Partner","T-Systems"],oec:true,
+   desc:"Google Cloud + T-Systems Sovereign Cloud für Deutschland. ABER: Google (US) bleibt Technologie-Provider = CLOUD Act-Risiko trotz deutschem Partner. OEC-Advisory: Vertragsstruktur kritisch prüfen."},
+  {flag:"🇺🇸",name:"Oracle EU Sovereign",hq:"USA / Madrid/Frankfurt",sov:"low",
+   tags:["CLOUD Act bleibt","EU Sovereign seit 2023","Equinix"],oec:true,
+   desc:"Oracle EU Sovereign Cloud seit 2023 (Madrid/Equinix, Frankfurt/Equinix). Oracle betont stärkere Isolation als Wettbewerber. ABER: US-Eigentümer, CLOUD Act-Risiko bleibt. Für bestimmte Workloads ausreichend – OEC kann das Assessment liefern."},
+];
+
+const EU_GAIAX = [
+  {flag:"🇪🇺",name:"GAIA-X AISBL",hq:"Brüssel · Non-Profit",sov:"high",
+   tags:["EU-Standard","Datensouveränität","180+ Data Spaces"],oec:true,
+   desc:"Europäisches Rahmenwerk für souveräne Dateninfrastruktur. Keine Cloud-Plattform selbst – sondern Standards, Zertifizierungen und Trust Framework. 180+ Datenspeicher in Entwicklung (2025). OEC kann Klienten helfen GAIA-X-Compliance-Anforderungen zu verstehen."},
+  {flag:"🇩🇪",name:"Sovereign Cloud Stack (SCS)",hq:"Deutschland · OSB Alliance",sov:"high",
+   tags:["FOSS","OpenStack","Kubernetes"],oec:true,
+   desc:"Open Source Cloud Stack für Souveränität. Basiert auf OpenStack und Kubernetes. Von der OSB Alliance (DE) entwickelt. Mehrere DACH-Provider setzen SCS ein. OEC kann bei SCS-basierten Provider-Assessments unterstützen."},
+  {flag:"🇪🇺",name:"IPCEI-CIS",hq:"EU-Initiative",sov:"mid",
+   tags:["EU","Cloud Infrastruktur","Gemeinsames Interesse"],oec:false,
+   desc:"Important Project of Common European Interest on Cloud Infrastructure and Services. EU-geförderte Initiative für europäische Cloud-Kapazitäten. Langfristige strategische Richtung – noch kein direktes OEC-Target."},
+  {flag:"🇩🇪",name:"Aleph Alpha",hq:"Deutschland · Heidelberg",sov:"high",
+   tags:["European AI","Sovereign AI","Schwarz Group"],oec:false,
+   desc:"Deutsches AI-Unternehmen, zunehmend von Schwarz Group kontrolliert. Sovereign AI für Europa. Relevant als Teil der EU AI-Souveränitätsstrategie."},
+  {flag:"🇩🇪",name:"OpenDesk",hq:"Deutschland · ZenDiS",sov:"high",
+   tags:["Open Source","Office Suite","Behörden"],oec:false,
+   desc:"Open Source Office Suite des deutschen Zentrums für Digitale Souveränität (ZenDiS). ICC Den Haag und andere Behörden migrierten 2025 von Microsoft. Langfristig relevanter Trend."},
+];
+
+// ── DACH SI/SP DATA ────────────────────────────────────────────────
+const SI_T1 = [
+  {name:"Bechtle AG",country:"DE · Neckarsulm",tier:1,oec:true,
+   tags:["Grösster dt. IT-Händler","Kubernetes","Multi-Cloud"],
+   desc:"Grösster deutscher IT-Systemintegrator. 14'000+ MA. Breites Cloud-Portfolio (AWS, Azure, GCP). Kubernetes-Services. Red Hat Premier Partner. OEC: Berät Bechtle-Kunden auf SI-Seite – hoher Assessment-Bedarf für Partner-Ökosystem-Strukturierung."},
+  {name:"Computacenter",country:"DE/GB · Hatfield",tier:1,oec:true,
+   tags:["Enterprise SI","Multi-Cloud","DACH"],
+   desc:"Grosser europäischer IT-Infrastruktur-Anbieter. Starke DACH-Präsenz. Managed Cloud Services. Cisco, HPE, Dell Premier Partner. OEC: Advisory für Partner-Programm-Optimierung."},
+  {name:"Swisscom IT Services",country:"CH · Bern/Zürich",tier:1,oec:true,
+   tags:["Schweizer Marktführer","FINMA","Cloud"],
+   desc:"IT-Tochter der Swisscom. Führender Schweizer IT-Services-Anbieter. Managed Cloud, Security, Digital Workplace. OEC: Partner-Programm-Assessment für Swisscom als MSP."},
+  {name:"T-Systems",country:"DE · Frankfurt",tier:1,oec:true,
+   tags:["Telekom-Tochter","Enterprise","Sovereign Cloud"],
+   desc:"IT-Tochter der Deutschen Telekom. Grosser Enterprise SI. Sovereign Cloud Fokus für Behörden. OEC: Unterstützung bei Hersteller-Partnership-Assessment."},
+  {name:"IBM Consulting (DACH)",country:"DE/CH/AT · München",tier:1,oec:true,
+   tags:["Red Hat","Hybrid Cloud","Enterprise AI"],
+   desc:"IBM Consulting nutzt Red Hat stark für Cloud Native. Grosse Consulting-Kapazität in DACH. OEC: Ergänzende Expertise für Partner Ecosystem-Themen."},
+  {name:"Capgemini DACH",country:"FR/DE · München",tier:1,oec:true,
+   tags:["Hyperscaler Partner","Cloud Native","Multi-Cloud"],
+   desc:"Grosses Consulting-Haus. AWS, Azure, GCP Advanced/Premier Partner. Cloud Native Practice. OEC kann Capgemini-Klienten mit gezieltem Partner-Ecosystem-Advisory unterstützen."},
+  {name:"DXC Technology",country:"US/DE · Global",tier:1,oec:false,
+   tags:["Enterprise IT","Managed Services"],
+   desc:"Grosser IT-Services-Anbieter. Eher Traditional IT als Cloud Native. Weniger relevant für OEC-Core-Nische."},
+  {name:"Kyndryl (IBM Spin-off)",country:"US/DE",tier:1,oec:false,
+   tags:["Managed Infrastructure","Spin-off"],
+   desc:"2021 von IBM abgespalten. Managed Infrastructure Services. Akquiriert Solvinity (NL, Nov 2025). Eher Traditional IT."},
+];
+
+const SI_T2 = [
+  {name:"Adfinis",country:"CH · Bern/Zürich + DE",tier:2,oec:true,
+   tags:["CNCF Member","Kubernetes","Open Source","Tania's Ex-Arbeitgeber"],
+   desc:"Führender schweizer Cloud Native Integrator. CNCF-Mitglied. Kubernetes, OpenShift, Cilium, HashiCorp. Tania's ehemaliger Arbeitgeber als Partner Alliance Manager – warme Beziehungen im Netzwerk. OEC: Potenzial als Netzwerk-Mitglied oder Klient."},
+  {name:"VSHN AG",country:"CH · Zürich",tier:2,oec:true,
+   tags:["Erster CH KCSP","Red Hat Premier","APPUiO","FINMA"],
+   desc:"Erster Kubernetes Certified Service Provider in der Schweiz. Red Hat Premier CCSP. APPUiO (eigene OpenShift-Plattform). FINMA-konform, ISO 27001. 300+ Kunden. OEC: Top-DACH-Target – sehr aktiv in Cloud Native, starkes Partner-Programm-Potenzial."},
+  {name:"Camptocamp",country:"CH/FR · Lausanne",tier:2,oec:true,
+   tags:["CNCF Member","Kubernetes","OpenStack","Open Source"],
+   desc:"Schweizer/Französischer Open Source Integrator. Kubernetes, OpenStack, SUSE, Ansible. CNCF-Mitglied. Stark in Romandie und Frankreich. OEC: 4-Sprachen-Vorteil (FR + DE) sehr relevant."},
+  {name:"B-Yond (Swisscom)",country:"CH · Zürich",tier:2,oec:true,
+   tags:["Swisscom","Cloud Native","Kubernetes"],
+   desc:"Cloud Native Tochter von Swisscom. Kubernetes, DevOps, Cloud Transformation. Starke Swisscom-Verbindung öffnet Türen zu grossen Schweizer Enterprises."},
+  {name:"Kubermatic",country:"DE · Hamburg",tier:2,oec:true,
+   tags:["CNCF Member","KKP","Multi-Cloud Kubernetes"],
+   desc:"Deutsches Cloud Native Unternehmen. Kubermatic Kubernetes Platform (KKP). CNCF-Mitglied. Kubernetes-Beratung und Plattform-Entwicklung. OEC: Starkes Partner-Programm-Potenzial in DE."},
+  {name:"SVA System Vertrieb Alexander",country:"DE · Hamburg",tier:2,oec:true,
+   tags:["DACH","Red Hat","Kubernetes","Enterprise"],
+   desc:"Grosser Deutscher IT-Dienstleister. Red Hat Premier Partner. Kubernetes und Cloud Transformation. OEC: Hoher Assessment-Bedarf für Partner-Ökosystem-Optimierung."},
+  {name:"SysEleven",country:"DE · Berlin",tier:2,oec:true,
+   tags:["Cloud Native","Kubernetes","Berlin"],
+   desc:"Berliner Cloud Native Provider. Managed Kubernetes, Metal-as-a-Service. DACH-fokussiert. Open Source-basiert. OEC: Boutique-Firma mit Wachstumspotenzial."},
+  {name:"Accenture (Cloud Native)",country:"IE/DE/CH · Global",tier:2,oec:true,
+   tags:["AWS/Azure Partner","Cloud Native"],
+   desc:"Accenture Cloud Native Practice. AWS, Azure, GCP Alliance Partner. Breit aufgestellt. OEC kann gezielt bei Partner-Ecosystem-Themen ergänzen."},
+  {name:"NovaTec",country:"DE · Leinfelden",tier:2,oec:true,
+   tags:["Cloud Native","Kubernetes","DevOps"],
+   desc:"Deutscher Cloud Native Integrator. Kubernetes, DevOps, Observability. Fokus auf Banken/Versicherungen. OEC: Finanzsektor-Relevanz sehr hoch."},
+  {name:"inovex",country:"DE · Karlsruhe",tier:2,oec:true,
+   tags:["Data Engineering","Kubernetes","Machine Learning"],
+   desc:"Deutsches IT-Projekthaus. Kubernetes, Data Engineering, ML. Starke technische Kompetenz. OEC: Advisory für Partner-Ökosystem-Aufbau."},
+  {name:"Tietoevry",country:"FI/DE · Helsinki+DACH",tier:2,oec:false,
+   tags:["Nordic SI","Cloud","DACH"],
+   desc:"Nordisches IT-Unternehmen mit DACH-Präsenz. Cloud-Services, Managed. Weniger Cloud Native-fokussiert."},
+  {name:"Devoteam G Cloud",country:"FR/DE · Frankfurt",tier:2,oec:true,
+   tags:["Google Cloud","Kubernetes","DACH"],
+   desc:"Google Cloud Premier Partner. Kubernetes und Cloud Native. DACH-Präsenz. OEC: Komplementäre Expertise – Google Cloud Partner-Programme."},
+];
+
+const SI_T3 = [
+  {name:"BEGASOFT",country:"CH · Widnau",tier:3,oec:true,
+   tags:["KCSP","Managed Kubernetes","Swiss Made"],
+   desc:"Schweizer KCSP. Managed Kubernetes Plattform auf eigener Schweizer Infrastruktur. Starke Datensouveränität-Positionierung. OEC: Perfekter Fit für Sovereign-Cloud-Advisory-Zusammenarbeit."},
+  {name:"Puzzle ITC",country:"CH · Bern",tier:3,oec:true,
+   tags:["Open Source","Kubernetes","CNCF"],
+   desc:"Schweizer Open Source Spezialist. Kubernetes, OpenShift, DevOps. Bern-basiert. OEC: Warme Community-Verbindungen via CNCF-Netzwerk."},
+  {name:"Tim&Koko",country:"CH · Zürich",tier:3,oec:true,
+   tags:["Cloud Native","Kubernetes","Boutique"],
+   desc:"Kleiner Schweizer Cloud Native Boutique-Integrator. Kubernetes-fokussiert. Genau die OEC-Primärzielgruppe: technisch exzellent, Partner-Ökosystem unterentwickelt."},
+  
+    {name:"acend gmbh",country:"CH · Zürich",tier:3,oec:true,
+   tags:["Cloud Native Training","Kubernetes","KCSP adjacent","Puzzle/VSHN Partner"],
+   desc:"Schweizer Cloud Native Trainings-Unternehmen. Partner von Puzzle ITC, VSHN und bespinian. Kubernetes, OpenShift, ArgoCD, Cilium, Helm, Prometheus. Praxisorientiert, CKA/CKAD-zertifizierte Trainer. Starkes Schweizer Cloud Native Netzwerk. Für OEC relevant als Community-Zugang."},
+  {name:"ayedo",country:"DE · Köln",tier:3,oec:true,
+   tags:["NIS-2","DORA","Sovereign","Kubernetes"],
+   desc:"Deutsches Cloud Native Unternehmen. Software Delivery Platform nach EU-Regularien (GDPR, NIS-2, DORA). Sovereignty-Fokus – sehr gut zu OEC passend."},
+  {name:"Skaylink (now Vodafone)",country:"DE · München",tier:2,oec:true,
+   tags:["Cloud Transformation","Digital"],
+   desc:"Führender deutscher Cloud-Spezialist. AWS Premier Partner (einer von 4 in DE), Azure Premier. Oktober 2025 von Vodafone akquiriert. 500+ MA. AWS Digital Sovereignty Competency. Hoher Assessment-Bedarf für Partner-Ecosystem-Optimierung."},
+  {name:"Cloudical",country:"DE · Berlin",tier:3,oec:true,
+   tags:["Kubernetes","Cloud Native","Boutique"],
+   desc:"Hamburger Cloud Native Boutique. Kubernetes, DevOps, Cloud Migration. Kleines Team, hohe Expertise. OEC-Primärzielgruppe."},
+  {name:"meshcloud",country:"DE · Frankfurt",tier:3,oec:true,
+   tags:["Multi-Cloud","Platform Eng","IDP"],
+   desc:"Deutsches Platform-Engineering-Unternehmen. Cloud Governance und Internal Developer Platform. Wachsend. OEC Advisory-Opportunity."},
+  {name:"Loodse (Kubermatic spin)",country:"DE · Hamburg",tier:3,oec:false,
+   tags:["Kubernetes","Acquired"],
+   desc:"Wurde Teil von Kubermatic. Kubernetes-Expertise."},
+  
+  {name:"Netcloud AG",country:"CH · Winterthur",tier:1,oec:true,
+   tags:["Cisco Partner of Year 2025","ICT","280+ MA","AWS Partner"],
+   desc:"Etablierter Schweizer ICT-Anbieter (Winterthur, 1998). 280+ Mitarbeitende, Cisco Global Cloud & AI Infrastructure Partner of the Year 2025. Networking, Security, Cloud. Kein reiner Cloud Native-Fokus aber starke Cisco/AWS-Partnerships."},
+  {name:"Spellbind",country:"DE",tier:3,oec:true,
+   tags:["DevOps","Kubernetes","Boutique"],
+   desc:"Modernes deutsches Tech-Consultancy. DevOps, Kubernetes, Cloud Native. Wächst bei Platform Engineering Projekten. OEC-Zielgruppe Tier 3."},
+];
+
+// ══════════════════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════════════════
+
+function badgeClass(t){return`b-${t}`}
+function accentClass(t){return`ac-${t}`}
+
+function renderVendorCard(v){
+  const oec=v.oec?`<span class="coec"><span class="de">OEC ★</span><span class="en">OEC ★</span></span>`:'';
+  return`<div class="vc" data-type="${v.type}" data-oec="${v.oec}" data-name="${v.name.toLowerCase()}"
+    onmouseenter="tip(event,'${esc(v.name)}','${esc(v.desc)}','${esc(v.mdf||'')}')"
+    onmouseleave="hideTip()">
+    <div class="ca ${accentClass(v.type)}"></div>
+    <div class="cb">
+      <div class="ct">
+        <div class="cn">${v.name}</div>
+        <span class="badge ${badgeClass(v.type)}">${v.type.toUpperCase()}</span>
+      </div>
+      <div class="cd">${v.desc.substring(0,88)}${v.desc.length>88?'…':''}</div>
+      <div class="cf">${v.tags.slice(0,3).map(t=>`<span class="ctag">${t}</span>`).join('')}${oec}</div>
+    </div>
+  </div>`;
+}
+
+function renderSovCard(v,level){
+  const sbClass=`sb-${level}`;
+  const sovLabel={high:'Vollsouverän',mid:'Teilsouverän',low:'Sovereignty-Washing'}[level];
+  const oecBadge=v.oec?`<span class="sov-badge" style="background:rgba(42,31,0,.8);color:var(--gold);border:1px solid rgba(212,160,23,.4)"><span class="de">OEC ★</span><span class="en">OEC ★</span></span>`:'';
+  return`<div class="sov-card">
+    <div class="sov-header" style="background:rgba(255,255,255,.02)">
+      <div class="sov-flag">${v.flag}</div>
+      <div><div class="sov-name">${v.name}</div><div class="sov-hq">${v.hq}</div></div>
+      <div class="sov-badges">
+        <span class="sov-badge ${sbClass}">${sovLabel}</span>${oecBadge}
+      </div>
+    </div>
+    <div class="sov-body">
+      <div class="sov-desc">${v.desc}</div>
+      <div class="sov-tags">${v.tags.map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
+function renderSICard(v){
+  const tierClass=`t${v.tier}`;
+  const tierLabel={1:'Tier 1 · Enterprise',2:'Tier 2 · Cloud Native',3:'Tier 3 · Boutique'}[v.tier];
+  const tierStyle={1:'st1',2:'st2',3:'st3'}[v.tier];
+  const oec=v.oec?`<span class="si-oec"><span class="de">OEC ★</span><span class="en">OEC ★</span></span>`:'';
+  return`<div class="si-card" data-name="${v.name.toLowerCase()}">
+    <div class="si-accent ${tierClass}"></div>
+    <div class="si-body">
+      <div class="si-top">
+        <div><div class="si-name">${v.name}</div><div class="si-country">${v.country}</div></div>
+        <span class="si-tier ${tierStyle}">${tierLabel}</span>
+      </div>
+      <div class="si-desc">${v.desc.substring(0,100)}${v.desc.length>100?'…':''}</div>
+      <div class="si-tags">${v.tags.slice(0,4).map(t=>`<span class="ctag">${t}</span>`).join('')}${oec}</div>
+    </div>
+  </div>`;
+}
+
+function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
+
+function populateAll(){
+  // Group vendors by category
+  const cats={};
+  VENDORS.forEach(v=>{
+    if(!cats[v.cat])cats[v.cat]=[];
+    cats[v.cat].push(v);
+  });
+  const container=document.getElementById('all-sections');
+  container.innerHTML='';
+  Object.entries(cats).forEach(([cat,vs])=>{
+    container.innerHTML+=`<div class="section" data-cat="${cat}">
+      <div class="sh"><div class="st">${cat}</div><div class="ss">${vs.length} Vendors</div></div>
+      <div class="vg">${vs.map(renderVendorCard).join('')}</div>
+    </div>`;
+  });
+}
+
+function populateEU(){
+  document.getElementById('eu-full').innerHTML=EU_FULL.map(v=>renderSovCard(v,'high')).join('');
+  document.getElementById('eu-partial').innerHTML=EU_PARTIAL.map(v=>renderSovCard(v,'mid')).join('');
+  document.getElementById('eu-wash').innerHTML=EU_WASH.map(v=>renderSovCard(v,'low')).join('');
+  document.getElementById('eu-gaiax').innerHTML=EU_GAIAX.map(v=>renderSovCard(v,v.sov)).join('');
+}
+
+function populateSI(){
+  document.getElementById('si-t1').innerHTML=SI_T1.map(renderSICard).join('');
+  document.getElementById('si-t2').innerHTML=SI_T2.map(renderSICard).join('');
+  document.getElementById('si-t3').innerHTML=SI_T3.map(renderSICard).join('');
+}
+
+// ── View switching ──────────────────────────────────────────────────
+const VIEWS=['all','eu','si','isv','strategy'];
+function showView(v){
+  VIEWS.forEach(id=>document.getElementById('view-'+id).classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── Filter ──────────────────────────────────────────────────────────
+function ft(type){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.vc').forEach(card=>{
+    if(type==='all') card.classList.remove('hidden');
+    else if(type==='oec') card.classList.toggle('hidden',card.dataset.oec!=='true');
+    else card.classList.toggle('hidden',card.dataset.type!==type);
+  });
+}
+
+// ── Search ──────────────────────────────────────────────────────────
+function searchVendors(q){
+  const lq=q.toLowerCase();
+  document.querySelectorAll('.vc').forEach(card=>{
+    const match=card.dataset.name.includes(lq)||q==='';
+    card.classList.toggle('hidden',!match);
+  });
+}
+function searchSI(q){
+  const lq=q.toLowerCase();
+  document.querySelectorAll('.si-card').forEach(card=>{
+    const match=card.dataset.name.includes(lq)||q==='';
+    card.style.display=match?'':'none';
+  });
+}
+
+// ── Tooltip ─────────────────────────────────────────────────────────
+const tooltip=document.getElementById('tooltip');
+function tip(e,name,desc,mdf){
+  document.getElementById('tt-n').textContent=name;
+  document.getElementById('tt-b').textContent=desc;
+  document.getElementById('tt-m').textContent=mdf?'MDF: '+mdf:'';
+  tooltip.classList.add('show');moveTip(e);
+}
+function moveTip(e){
+  const x=e.clientX+16,y=e.clientY+16;
+  const w=tooltip.offsetWidth,h=tooltip.offsetHeight;
+  tooltip.style.left=(x+w>window.innerWidth?x-w-32:x)+'px';
+  tooltip.style.top=(y+h>window.innerHeight?y-h-16:y)+'px';
+}
+function hideTip(){tooltip.classList.remove('show')}
+document.addEventListener('mousemove',e=>{if(tooltip.classList.contains('show'))moveTip(e)});
+
+// ══════════════════════════════════════════════════════════════════════
+// DACH ISV DATA
+// ══════════════════════════════════════════════════════════════════════
+
+const DACH_ISV = [
+
+  // ── ORCHESTRATION & KUBERNETES ──────────────────────────────────────
+  {name:"meltcloud",hq:"DE · München",cat:"isv-orch",size:"startup",type:"oss",oec:true,
+   tags:["On-Prem Kubernetes","Sovereign","Cloud Native DC"],
+   desc:"Next-gen Kubernetes-Plattform für On-Premises. GKE/AKS-Erfahrung ohne Public Cloud. Gegründet aus der Überzeugung dass Cloud Native on-prem möglich sein muss. Stark bei Datensouveränität – perfekte OEC-Synergie.",
+   mdf:"Partner-Programm im Aufbau"},
+
+  {name:"Kubermatic",hq:"DE · Hamburg",cat:"isv-orch",size:"scale",type:"hybrid",oec:true,
+   tags:["KKP","Multi-Cloud Kubernetes","CNCF Member"],
+   desc:"Kubermatic Kubernetes Platform (KKP). Multi-Cloud Kubernetes Management für 20+ Cloud-Anbieter. CNCF-Mitglied. Swisscom als Referenzkunde. Aktives Partner-Programm mit MDF-Potenzial.",
+   mdf:"USD 5K–15K via Kubermatic Partner"},
+
+  {name:"SUSE (Rancher)",hq:"DE · Nürnberg",cat:"isv-orch",size:"etabliert",type:"hybrid",oec:true,
+   tags:["Rancher","Kubernetes Enterprise","DACH-Nummer1"],
+   desc:"Deutsches Open Source-Unternehmen. Rancher-Akquisition macht SUSE zum DACH-Kubernetes-Champion. Partner-Programm aktiv und DACH-stark. OEC Top-Tier-Priorität.",
+   mdf:"USD 8K–30K via SUSE Partner"},
+
+  {name:"Glasskube",hq:"AT · Wien + Chicago",cat:"isv-orch",size:"startup",type:"foss",oec:true,
+   tags:["Kubernetes Package Manager","YC-backed","Helm-Alternative","distr.sh"],
+   desc:"Nächste Generation Kubernetes Package Manager. YCombinator-backed. OSS unter Apache 2.0. Pivot zu distr.sh – Software Distribution Platform für On-Prem/BYOC/VPC. Stark bei EU-Datensouveränität-Thema. OEC-Zielgruppe: ISVs die distr.sh nutzen wollen.",
+   mdf:"Partner-Programm im Aufbau"},
+
+  {name:"Loft Labs",hq:"DE · München",cat:"isv-orch",size:"startup",type:"hybrid",oec:true,
+   tags:["vCluster","Virtual Kubernetes","Multi-Tenancy"],
+   desc:"Erfinder von vCluster – virtuelle Kubernetes-Cluster für Multi-Tenancy. Ermöglicht Kosten- und Ressourcentrennung ohne physische Cluster. Schnell wachsend. Partner-Programm aktiv.",
+   mdf:"USD 3K–10K via Loft Partner"},
+
+  {name:"Sidero Labs",hq:"DE-adjacent · Remote-first",cat:"isv-orch",size:"startup",type:"foss",oec:false,
+   tags:["Talos OS","Immutable Kubernetes","Edge"],
+   desc:"Talos Linux – unveränderliches, sicheres OS für Kubernetes. CNCF-Mitglied. Roche und PowerFlex als Kunden. Edge-Computing-Fokus. Kein direktes DACH-HQ aber starke EU-Community.",
+   mdf:"Limitiertes Partner-Programm"},
+
+  // ── OBSERVABILITY ───────────────────────────────────────────────────
+  {name:"Netdata",hq:"CH · Zug (Remote-first)",cat:"isv-obs",size:"scale",type:"hybrid",oec:true,
+   tags:["Real-Time Monitoring","Agent","Infrastruktur"],
+   desc:"Real-Time Infrastructure Monitoring. OSS Agent + Netdata Cloud (kommerziell). Schweizer Holding. Sehr niedrige Einstiegshürde – kostenloser OSS-Agent. Aktives Partner-Programm.",
+   mdf:"USD 3K–10K via Netdata Partner"},
+
+  {name:"Coroot",hq:"DE-Community",cat:"isv-obs",size:"startup",type:"foss",oec:false,
+   tags:["eBPF","Zero-Instrumentation","Observability"],
+   desc:"eBPF-basierte Observability ohne Code-Änderungen. Zero-Instrumentation Monitoring. Wächst schnell in der Cloud Native Community. Frühes Stadium.",
+   mdf:"Kein Partner-Programm"},
+
+  {name:"Checkmk",hq:"DE · München",cat:"isv-obs",size:"etabliert",type:"hybrid",oec:true,
+   tags:["IT Monitoring","DACH-stark","Hybrid IT"],
+   desc:"IT-Monitoring-Plattform. Starke DACH-Präsenz. Hybrid IT: traditionelle Infrastruktur + Cloud Native. OSS Raw Edition + Enterprise. Aktives Reseller-Partner-Programm.",
+   mdf:"USD 5K–15K via Checkmk Partner"},
+
+  
+
+  // ── SECURITY ────────────────────────────────────────────────────────
+  {name:"Stackspin (Greenhost)",hq:"NL/DE · Amsterdam",cat:"isv-sec",size:"startup",type:"foss",oec:false,
+   tags:["Sovereign Apps","Open Source","Self-hosted"],
+   desc:"Open Source Self-Hosted Suite (Nextcloud, Rocket.Chat, GitLab). Fokus auf EU-Datensouveränität. Nischenanbieter aber wächst mit Sovereignty-Trend.",
+   mdf:"Kein formelles Partner-Programm"},
+
+  {name:"Securepoint",hq:"DE · Lüneburg",cat:"isv-sec",size:"etabliert",type:"closed",oec:true,
+   tags:["UTM","Zero Trust","DACH-MSP"],
+   desc:"Deutsches IT-Security-Unternehmen. UTM-Firewalls, Zero Trust. Starkes MSP-Partner-Programm in DACH. Relevant für OEC-Klienten die Cloud-Security-Partnerschaften aufbauen.",
+   mdf:"USD 3K–10K via Securepoint MSP"},
+
+  {name:"genua",hq:"DE · Kirchheim",cat:"isv-sec",size:"etabliert",type:"closed",oec:false,
+   tags:["BSI","Hochsicherheit","Behörden"],
+   desc:"Deutsche IT-Sicherheitsfirma. BSI-zertifiziert. Hochsicherheitslösungen für Behörden und kritische Infrastruktur. Sehr nischig.",
+   mdf:"Kein direktes MDF-Programm"},
+
+  {name:"Cryptomator",hq:"DE · Bonn (Skymatic)",cat:"isv-sec",size:"startup",type:"foss",oec:false,
+   tags:["Verschlüsselung","Open Source","Cloud-Dateien"],
+   desc:"Open Source Client-seitige Verschlüsselung für Cloud-Dateien. Kostenlos und OSS. Kein Partner-Programm. Aber interessante Sovereignty-Story.",
+   mdf:"Kein Partner-Programm"},
+
+  // ── PLATFORM ENGINEERING & DEVELOPER TOOLS ─────────────────────────
+  {name:"Humanitec",hq:"DE · Berlin",cat:"isv-plat",size:"scale",type:"hybrid",oec:true,
+   tags:["IDP Orchestrator","Platform Engineering","Score"],
+   desc:"Internal Developer Platform Orchestrator. Berliner Startup, Series B. Score-Projekt (CNCF Sandbox). Wächst sehr schnell. Aktives Partner-Programm. OEC kann Klienten beim IDP-Readiness-Assessment unterstützen.",
+   mdf:"USD 5K–15K via Humanitec Partner"},
+
+  {name:"Mogenius",hq:"DE · Köln",cat:"isv-plat",size:"startup",type:"hybrid",oec:true,
+   tags:["Kubernetes Platform","Self-Service","IDP"],
+   desc:"KI-gestützte Kubernetes-Plattform für Self-Service-Deployment. Entwickler-fokussiert. Cloud-agnostisch. Wächst bei KI-nativen Infrastruktur-Teams. Partner-Programm im Aufbau.",
+   mdf:"Partner-Programm im Aufbau"},
+
+  {name:"Steadybit",hq:"DE · Hamburg",cat:"isv-plat",size:"startup",type:"hybrid",oec:true,
+   tags:["Chaos Engineering","Reliability","CNCF Member"],
+   desc:"Chaos Engineering Plattform für Reliability-Testing. CNCF Silver Member (KubeCon Europe 2025). Proaktive Erkennung von Zuverlässigkeitsproblemen. Aktives Partner-Programm.",
+   mdf:"USD 3K–8K via Steadybit Partner"},
+
+  {name:"meshcloud",hq:"DE · Frankfurt",cat:"isv-plat",size:"startup",type:"hybrid",oec:true,
+   tags:["Cloud Governance","Multi-Cloud","Platform Engineering"],
+   desc:"Cloud Governance und Internal Developer Platform. Multi-Cloud Management für Enterprise. Frankfurter Startup. Platform-Engineering-Fokus – wächst mit dem Trend.",
+   mdf:"USD 3K–8K via meshcloud Partner"},
+
+  {name:"Terramate",hq:"DE · Remote-first",cat:"isv-plat",size:"startup",type:"hybrid",oec:true,
+   tags:["IaC Orchestration","Terraform","Tofu"],
+   desc:"Orchestration für Infrastructure-as-Code (Terraform, OpenTofu). Automatisierung, Compliance, Observability für IaC-Teams. Wächst mit der OpenTofu-Community.",
+   mdf:"Partner-Programm im Aufbau"},
+
+  
+
+  {name:"Timoni",hq:"CH-Community (Stefan Prodan)",cat:"isv-plat",size:"startup",type:"foss",oec:false,
+   tags:["CUE","Kubernetes Packaging","Helm-Alternative"],
+   desc:"CUE-basiertes Kubernetes-Packaging-Tool. Alternative zu Helm mit starker Typisierung. Schweizer Community-Roots. Frühes Projekt.",
+   mdf:"Kein Partner-Programm"},
+
+  // ── DATA, STORAGE & MESSAGING ───────────────────────────────────────
+  {name:"immudb (CodeNotary)",hq:"CH · Zug",cat:"isv-data",size:"startup",type:"foss",oec:true,
+   tags:["Immutable Database","Ledger","Compliance"],
+   desc:"Unveränderliche Datenbank für Compliance und Audit-Trails. Schweizer Firma (CodeNotary). OSS + Enterprise. Stark bei regulierten Industrien – FINMA-relevant. OEC kann Partnership-Möglichkeiten erschliessen.",
+   mdf:"USD 3K–8K via CodeNotary Partner"},
+
+  
+
+  {name:"Conduktor",hq:"FR/DE · Paris + DACH",cat:"isv-data",size:"scale",type:"closed",oec:true,
+   tags:["Kafka Management","Data Streaming","Enterprise"],
+   desc:"Kafka Management Platform. Enterprise Kafka-Tooling für Teams. Stark in der DACH-Region bei Finanz- und Telko-Kunden. Aktives Partner-Programm.",
+   mdf:"USD 5K–15K via Conduktor Partner"},
+
+  {name:"Aiven",hq:"FI · Helsinki (DACH-Büro)",cat:"isv-data",size:"etabliert",type:"hybrid",oec:true,
+   tags:["Managed Open Source","Kafka","PostgreSQL","Redis"],
+   desc:"Managed Open Source Data Services (Kafka, PostgreSQL, OpenSearch). Europäischer Anbieter, DACH-Büro. Aktives Partner-Programm. EU-Datenspeicherung möglich.",
+   mdf:"USD 5K–15K via Aiven Partner"},
+
+  // ── CI/CD, IaC & AUTOMATION ─────────────────────────────────────────
+  {name:"Woodpecker CI",hq:"DE-Community",cat:"isv-cicd",size:"startup",type:"foss",oec:false,
+   tags:["CI/CD","Open Source","Gitea"],
+   desc:"Community-Fork von Drone CI. Leichtgewichtiges Open Source CI/CD. Kein kommerzielles Backing. Kein Partner-Programm.",
+   mdf:"Kein Partner-Programm"},
+
+  {name:"Gitea",hq:"DE-Community (Ziegler et al)",cat:"isv-cicd",size:"scale",type:"foss",oec:false,
+   tags:["Self-hosted Git","Open Source","Sovereign"],
+   desc:"Self-hosted Git Service. Alternative zu GitHub für Datensouveränität. OSS. Keine kommerzielle Entität. Kein Partner-Programm.",
+   mdf:"Kein Partner-Programm"},
+
+  {name:"Renovate (Mend.io)",hq:"IL/DE · Tel Aviv + DACH",cat:"isv-cicd",size:"scale",type:"hybrid",oec:false,
+   tags:["Dependency Updates","Automated PRs","Security"],
+   desc:"Automatisierte Dependency-Updates. OSS-Tool (Renovate) + Mend.io Plattform. Weit verbreitet in Cloud Native. Kein direktes DACH-HQ.",
+   mdf:"Via Mend.io Partner"},
+
+  {name:"Cycloid",hq:"FR · Paris (DACH-Präsenz)",cat:"isv-cicd",size:"startup",type:"hybrid",oec:false,
+   tags:["DevOps Platform","IDP","Self-Service"],
+   desc:"DevOps Platform und Internal Developer Platform. Französisch, wächst in DACH. Hybrid-Lizenz.",
+   mdf:"Cycloid Partner Programme"},
+
+  // ── NETWORKING & CONNECTIVITY ────────────────────────────────────────
+  {name:"Replicated",hq:"US mit DE-Community",cat:"isv-net",size:"scale",type:"hybrid",oec:true,
+   tags:["On-Prem Software","KOTS","Sovereign Delivery"],
+   desc:"Platform für On-Prem Software Distribution. KOTS (Kubernetes Off-The-Shelf). Hilft ISVs Software sicher in Kunden-Umgebungen zu liefern. Stark bei Sovereign/Air-gapped Deployments. OEC-relevant.",
+   mdf:"USD 3K–10K via Replicated Partner"},
+
+  {name:"Tailscale",hq:"CA (starke DACH-Community)",cat:"isv-net",size:"scale",type:"hybrid",oec:false,
+   tags:["Zero Trust Network","WireGuard","Remote Access"],
+   desc:"Zero Trust Networking basierend auf WireGuard. Sehr beliebt in Cloud Native Community. Keine DACH-Präsenz aber breite Nutzung in DACH-Firmen.",
+   mdf:"Limitiertes Partner-Programm"},
+
+  {name:"Cloudogu",hq:"DE · Braunschweig",cat:"isv-net",size:"startup",type:"hybrid",oec:true,
+   tags:["Cloudogu EcoSystem","DevOps Platform","On-Prem"],
+   desc:"DevOps-Plattform für On-Premises und Sovereign Deployments. Deutsches Unternehmen. Starker öffentlicher Sektor Fokus. OEC kann Partnership-Assessment liefern.",
+   mdf:"USD 3K–8K via Cloudogu Partner"},
+
+  // ── AI / ML CLOUD NATIVE ────────────────────────────────────────────
+  {name:"Aleph Alpha",hq:"DE · Heidelberg",cat:"isv-ai",size:"etabliert",type:"closed",oec:true,
+   tags:["Sovereign AI","European LLM","Schwarz Group"],
+   desc:"Europäisches Large Language Model und AI-Plattform. Zunehmend von Schwarz Group kontrolliert. Sovereign AI – Daten bleiben in Europa. Wächst in regulierten Sektoren (Behörden, Gesundheit). OEC: Partner-Ecosystem-Assessment hochrelevant.",
+   mdf:"Aleph Alpha Partner Programm"},
+
+  {name:"Nebuly",hq:"IT · Mailand (DACH-Community)",cat:"isv-ai",size:"startup",type:"foss",oec:false,
+   tags:["AI Optimization","Inference","Open Source"],
+   desc:"Open Source AI-Inference-Optimierung. Reduziert Kosten für LLM-Inference. Italienisch, stark in DACH-Cloud-Native-Community.",
+   mdf:"Kein Partner-Programm"},
+
+  {name:"ZenML",hq:"DE · München",cat:"isv-ai",size:"startup",type:"hybrid",oec:true,
+   tags:["MLOps","Pipeline Orchestration","Cloud Native ML"],
+   desc:"MLOps-Plattform und Pipeline-Orchestrierung. Münchener Startup. Open Source Core + ZenML Pro. Wächst mit AI/ML-Adoption in Cloud Native. OEC: Partner-Ecosystem-Assessment für MLOps-Firmen.",
+   mdf:"USD 3K–8K via ZenML Partner"},
+
+  {name:"Hugging Face (DACH)",hq:"US/FR (starke DACH-Präsenz)",cat:"isv-ai",size:"etabliert",type:"hybrid",oec:true,
+   tags:["AI Models","Open Source Hub","Enterprise"],
+   desc:"Die GitHub für AI-Modelle. Sehr starke DACH-Community und Enterprise-Adoption. Hugging Face Hub (OSS) + Enterprise Solutions. Wächst explosiv. OEC kann bei Partner-Programm-Navigation helfen.",
+   mdf:"USD 5K–20K via HF Enterprise Partner"},
+];
+
+// Render ISV
+function renderISVCard(v){
+  const sizeLabel={startup:'🌱 Startup',scale:'🚀 Scale-up',etabliert:'🏢 Etabliert'}[v.size]||v.size;
+  const sizeColor={startup:'rgba(22,163,74,.15)',scale:'rgba(37,99,235,.15)',etabliert:'rgba(147,51,234,.15)'}[v.size];
+  const sizeBorder={startup:'rgba(22,163,74,.3)',scale:'rgba(37,99,235,.3)',etabliert:'rgba(147,51,234,.3)'}[v.size];
+  const sizeText={startup:'var(--foss)',scale:'var(--oss)',etabliert:'var(--hybrid)'}[v.size];
+  const oec=v.oec?`<span class="si-oec"><span class="de">OEC ★</span><span class="en">OEC ★</span></span>`:'';
+  const badge_map={foss:'FOSS',oss:'OSS',hybrid:'Hybrid',closed:'Closed'};
+  const badge_cls={foss:'b-foss',oss:'b-oss',hybrid:'b-hybrid',closed:'b-closed'};
+  return`<div class="si-card" data-name="${v.name.toLowerCase()} ${(v.hq||'').toLowerCase()}" style="position:relative">
+    <div class="si-accent" style="background:linear-gradient(90deg,${sizeText},transparent)"></div>
+    <div class="si-body">
+      <div class="si-top">
+        <div>
+          <div class="si-name">${v.name}</div>
+          <div class="si-country">${v.hq}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+          <span style="font-size:8px;font-weight:800;letter-spacing:1px;padding:2px 7px;border-radius:2px;background:${sizeColor};color:${sizeText};border:1px solid ${sizeBorder}">${sizeLabel}</span>
+          <span class="badge ${badge_cls[v.type]}">${badge_map[v.type]}</span>
+        </div>
+      </div>
+      <div class="si-desc">${v.desc.substring(0,110)}${v.desc.length>110?'…':''}</div>
+      <div class="si-tags">${v.tags.slice(0,4).map(t=>`<span class="ctag">${t}</span>`).join('')}${oec}</div>
+      ${v.mdf?`<div style="margin-top:7px;font-size:10px;font-weight:700;color:var(--gold)">MDF: ${v.mdf}</div>`:''}
+    </div>
+  </div>`;
+}
+
+function populateISV(){
+  const cats=['isv-orch','isv-obs','isv-sec','isv-plat','isv-data','isv-cicd','isv-net','isv-ai'];
+  cats.forEach(cat=>{
+    const el=document.getElementById(cat);
+    if(el) el.innerHTML=DACH_ISV.filter(v=>v.cat===cat).map(renderISVCard).join('');
+  });
+}
+
+function searchISV(q){
+  const lq=q.toLowerCase();
+  document.querySelectorAll('#view-isv .si-card').forEach(card=>{
+    card.style.display=(!q||card.dataset.name.includes(lq))?'':'none';
+  });
+}
+
+// ── Init ─────────────────────────────────────────────────────────────
+populateAll();
+populateEU();
+populateSI();
+
+function setLang(lang) {
+  document.body.dataset.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang);
+  });
+  // Update html lang attribute
+  document.documentElement.lang = lang;
+}
+
+</script>
+</body>
+</html>
