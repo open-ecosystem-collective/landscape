@@ -21,7 +21,7 @@ Available in German (DE) and English (EN) – toggle in the top right corner.
 
 ## License
 
-CC-BY-SA 4.0 · Open Ecosystem Collective · Tania Vonarburg-Romero
+CC-BY-SA 4.0 · Open Ecosystem Collective
 Use it, adapt it, give back under the same licence.
 
 ## Part of
