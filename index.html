@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Open Ecosystem Collective – Cloud Native Landscape: Every vendor, every layer. DACH System Integrators, European Sovereign Cloud, DACH ISV software vendors. OEC strategy map."/>
+<meta name="description" content="Open Ecosystem Collective: Cloud Native Universe DACH und Cloud Native Landscape. Anbieter, Integratoren, Hersteller, Marktplätze, Projekte, Communities und Events mit öffentlich belegten Verbindungen."/>
 <title>Cloud Native Universe · Open Ecosystem Collective</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -15,86 +15,72 @@ body{background:#0D0820;color:#EDE8F5;font-family:'Raleway',sans-serif;
   background:radial-gradient(ellipse at 20% 50%,rgba(61,31,110,.4) 0%,transparent 55%),
              radial-gradient(ellipse at 80% 20%,rgba(27,67,50,.3) 0%,transparent 45%),
              #0D0820}
-.container{max-width:640px;text-align:center}
-.eyebrow{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;
-  color:#B8956A;margin-bottom:20px}
-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,7vw,80px);
-  font-weight:700;line-height:1.0;color:#EDE8F5;margin-bottom:8px}
+.container{max-width:720px;text-align:center}
+.topbar{position:fixed;top:16px;right:20px}
+.topbar button{background:none;border:1px solid rgba(212,160,23,.35);color:#EDE8F5;border-radius:4px;
+  padding:4px 10px;font:600 11px 'Raleway',sans-serif;letter-spacing:2px;cursor:pointer;margin-left:4px}
+.topbar button.on{background:rgba(212,160,23,.2);border-color:#D4A017}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#B8956A;margin-bottom:20px}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,7vw,80px);font-weight:700;line-height:1.0;color:#EDE8F5;margin-bottom:8px}
 h1 em{font-style:italic;color:#D4A017}
-.sub{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;
-  color:#AFA8C0;margin-bottom:48px}
-.lang-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px}
-.lang-card{border:1px solid rgba(212,160,23,.25);border-radius:8px;
-  padding:28px 24px;text-decoration:none;
-  background:rgba(255,255,255,.02);
-  transition:transform .15s,border-color .15s,box-shadow .15s}
-.lang-card:hover{transform:translateY(-3px);border-color:rgba(212,160,23,.6);
-  box-shadow:0 12px 32px rgba(0,0,0,.4)}
-.lang-flag{font-size:36px;display:block;margin-bottom:12px}
-.lang-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
-  color:#EDE8F5;margin-bottom:4px}
-.lang-label{font-size:11px;font-weight:600;letter-spacing:2px;
-  text-transform:uppercase;color:#AFA8C0}
-.divider{width:60px;height:2px;background:linear-gradient(90deg,#D4A017,transparent);
-  margin:0 auto 32px}
-.meta{font-size:12px;color:#AFA8C0;line-height:1.7;margin-bottom:32px}
-.meta strong{color:#EDE8F5}
+.sub{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:#AFA8C0;margin-bottom:40px}
+.divider{width:60px;height:2px;background:linear-gradient(90deg,#D4A017,transparent);margin:0 auto 32px}
 .stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
-.stat-item{}
 .stat-n{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#D4A017}
 .stat-l{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#AFA8C0}
-.footer{font-size:11px;color:#AFA8C0;opacity:.5;letter-spacing:1px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px}
+@media(max-width:560px){.cards{grid-template-columns:1fr}}
+.card{border:1px solid rgba(212,160,23,.25);border-radius:8px;padding:28px 24px;text-decoration:none;text-align:left;
+  background:rgba(255,255,255,.02);transition:transform .15s,border-color .15s,box-shadow .15s}
+.card:hover{transform:translateY(-3px);border-color:rgba(212,160,23,.6);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.card-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:#EDE8F5;margin-bottom:8px}
+.card-text{font-size:13px;line-height:1.6;color:#AFA8C0}
+.card-go{display:block;margin-top:14px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D4A017}
+.meta{font-size:12px;color:#AFA8C0;line-height:1.7;margin-bottom:32px}
+.footer{font-size:11px;color:#AFA8C0;opacity:.6;letter-spacing:1px}
 .footer a{color:#D4A017;text-decoration:none}
+body.en .de, body:not(.en) .en{display:none}
 </style>
 </head>
 <body>
+<div class="topbar"><button id="bde" class="on" onclick="lang('de')">DE</button><button id="ben" onclick="lang('en')">EN</button></div>
 <div class="container">
-  <div class="eyebrow">Open Ecosystem Collective · Landscape Map</div>
+  <div class="eyebrow">Open Ecosystem Collective</div>
   <h1>Cloud Native<br/><em>Universe</em></h1>
-  <div class="sub">Every vendor. Every layer. One strategy.</div>
+  <div class="sub"><span class="de">Wer mit wem, belegt mit Quellen.</span><span class="en">Who works with whom, backed by sources.</span></div>
   <div class="divider"></div>
 
   <div class="stats">
-    <div class="stat-item">
-      <div class="stat-n">120+</div>
-      <div class="stat-l">Vendors</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-n">35</div>
-      <div class="stat-l">DACH ISVs</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-n">34</div>
-      <div class="stat-l">OEC Targets</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-n">4</div>
-      <div class="stat-l">Languages</div>
-    </div>
+    <div><div class="stat-n">400+</div><div class="stat-l"><span class="de">Akteure</span><span class="en">Actors</span></div></div>
+    <div><div class="stat-n">663</div><div class="stat-l"><span class="de">Verbindungen</span><span class="en">Connections</span></div></div>
+    <div><div class="stat-n">188</div><div class="stat-l"><span class="de">DACH-Firmen</span><span class="en">DACH companies</span></div></div>
+    <div><div class="stat-n">6</div><div class="stat-l"><span class="de">Missionen</span><span class="en">Missions</span></div></div>
   </div>
 
-  <div class="lang-cards">
-    <a class="lang-card" href="landscape.html">
-      <span class="lang-flag">🇩🇪🇨🇭🇦🇹</span>
-      <div class="lang-name">Deutsch</div>
-      <div class="lang-label">Deutsche Version</div>
+  <div class="cards">
+    <a class="card" href="universe.html">
+      <div class="card-name">Universe DACH</div>
+      <div class="card-text"><span class="de">Die interaktive Karte: Marktplätze, Integratoren, Hersteller, Projekte, Forschung, Communities und Events rund um den Kunden, nach Ländern geordnet. Verbindungen sind mit Quellen belegt, Angaben aus dem Netzwerk sind gekennzeichnet.</span><span class="en">The interactive map: marketplaces, integrators, vendors, projects, research, communities and events around the customer, arranged by country. Connections are backed by sources; network information is marked as such.</span></div>
+      <span class="card-go"><span class="de">Universe öffnen →</span><span class="en">Open the universe →</span></span>
     </a>
-    <a class="lang-card" href="landscape.html">
-      <span class="lang-flag">🇬🇧🇺🇸</span>
-      <div class="lang-name">English</div>
-      <div class="lang-label">English Version</div>
+    <a class="card" href="landscape.html">
+      <div class="card-name">Landscape</div>
+      <div class="card-text"><span class="de">Die Übersicht als Liste: Hersteller, europäische Sovereign Cloud, DACH-Integratoren und DACH-Softwarehersteller, mit Produkten und Lizenzmodell.</span><span class="en">The overview as a list: vendors, European sovereign cloud, DACH integrators and DACH software vendors, with products and licence model.</span></div>
+      <span class="card-go"><span class="de">Landscape öffnen →</span><span class="en">Open the landscape →</span></span>
     </a>
   </div>
 
-  <div class="meta">
-    <strong>5 Views:</strong> All Vendors · European Sovereign Cloud · DACH System Integrators · DACH ISV Vendors · OEC Conquest Strategy<br/>
-    Includes FOSS/OSS/Hybrid/Closed licence tags · MDF potential · OEC priority scoring
-  </div>
+  <div class="meta"><span class="de">Fehlt ein Akteur oder eine Verbindung? Ein Pull Request mit öffentlicher Quelle genügt.</span><span class="en">Missing an actor or a connection? A pull request with a public source is all it takes.</span></div>
 
   <div class="footer">
-    <a href="https://github.com/open-ecosystem-collective">github.com/open-ecosystem-collective</a>
-    · CC-BY-SA 4.0 · Tania Romero Campos
+    <a href="https://github.com/open-ecosystem-collective/landscape">github.com/open-ecosystem-collective/landscape</a>
+    · CC-BY-SA 4.0 · Open Ecosystem Collective
   </div>
 </div>
+<script>
+function lang(l){document.body.classList.toggle('en',l==='en');document.documentElement.lang=l;
+document.getElementById('bde').classList.toggle('on',l==='de');document.getElementById('ben').classList.toggle('on',l==='en');}
+if((navigator.language||'').slice(0,2)!=='de')lang('en');
+</script>
 </body>
 </html>
