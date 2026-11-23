@@ -1,23 +1,20 @@
-```markdown
-# Cloud Native Universe · Landscape Map
+# Cloud Native Universe · Open Ecosystem Collective
 
-Interactive vendor landscape for Cloud Native & Open Source ecosystem strategy.
+Interactive maps of the cloud native and open source ecosystem in the DACH region.
 
-**→ [Open the Landscape](https://open-ecosystem-collective.github.io/landscape/)**
+**→ [Open the start page](https://open-ecosystem-collective.github.io/landscape/)**
 
 ## What's inside
 
-- 120+ vendors across 10 categories
-- FOSS / OSS / Hybrid / Closed Source classification
-- European Sovereign Cloud providers (CLOUD Act analysis)
-- 35 DACH Cloud Native ISV software vendors
-- DACH System Integrators (Tier 1/2/3)
-- OEC Conquest Strategy - 34 priority targets with MDF potential
-- Bilingual: Deutsch 🇩🇪 / English 🇬🇧
+- **[Universe DACH](https://open-ecosystem-collective.github.io/landscape/universe.html)**: 400+ actors and 663 connections, arranged in rings around the customer (marketplaces, integrators, vendors, projects, research, communities, events) and in country sectors (CH, DE, AT, international). Every connection carries a source; network information without a public source is marked as such. Six missions show which actors can work together on a typical customer need.
+- **[Landscape](https://open-ecosystem-collective.github.io/landscape/landscape.html)**: vendors, European sovereign cloud providers, DACH system integrators and DACH ISVs, with products and FOSS / OSS / Hybrid / Closed Source classification.
+- Bilingual: German and English, toggle in the top right corner.
 
-## Languages
+Deep link to an actor: `universe.html?a=<id>`
 
-Available in German (DE) and English (EN) – toggle in the top right corner.
+## Contributing
+
+Missing an actor or a connection? Open a pull request or an issue with a public source.
 
 ## License
 
@@ -26,6 +23,5 @@ Use it, adapt it, give back under the same licence.
 
 ## Part of
 
-→ [Open Ecosystem Collective](https://github.com/open-ecosystem-collective)  
+→ [Open Ecosystem Collective](https://github.com/open-ecosystem-collective)
 → [Methodology](https://github.com/open-ecosystem-collective/methodology)
-```
